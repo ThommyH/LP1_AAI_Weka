@@ -2,3 +2,4 @@ bin/*
 *.class
 *.metadata
 .classpath
+MyWekaClassifier/src/myclassifier/MyClassifier.java.orig
