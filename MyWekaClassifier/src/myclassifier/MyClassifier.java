@@ -36,16 +36,22 @@ public class MyClassifier extends Classifier
     	// and 2nd the amount of instances where the attribut belongs to no (last attribute in data)
     	attr_values_count = new ArrayList<Map<String, List<Integer>>>();
     	
-    	for (int i = 0; i < num_attr-2; i++){
+    	for (int i = 0; i < num_attr-1; i++){
     		Map<String, List<Integer>> new_map = new HashMap<String, List<Integer>>();
     		attr_values_count.add(new_map);
     	}
     	
     	for (int inst_nu = 0; inst_nu < num_inst; inst_nu++){
     		Instance inst = data.instance(inst_nu);
-    		for (int attr_nu = 0; attr_nu < num_attr-2; attr_nu++){
+    		if (inst.stringValue(num_attr-1).equals("yes")){
+    			yes_count += 1;
+    		} else {
+    			no_count += 1;
+    		}
+    		for (int attr_nu = 0; attr_nu < num_attr-1; attr_nu++){
     			Map<String, List<Integer>> attr_map = attr_values_count.get(attr_nu);
     			String attr_val = inst.stringValue(attr_nu);
+    			System.out.println(attr_val);
     			if (!attr_map.containsKey(attr_val)){
     				List<Integer> yes_no_list = new ArrayList<Integer>();
     				yes_no_list.add(0);
@@ -54,10 +60,8 @@ public class MyClassifier extends Classifier
     			}
     			
     			if (inst.stringValue(num_attr-1).equals("yes")){
-    				yes_count += 1;
     				attr_map.get(attr_val).set(0, (Integer)attr_map.get(attr_val).get(0)+1); 
     			} else {
-    				no_count += 1;
     				attr_map.get(attr_val).set(1, (Integer)attr_map.get(attr_val).get(1)+1);
     			}
     		}
@@ -70,9 +74,24 @@ public class MyClassifier extends Classifier
      * trained classifier.
      */
     public double classifyInstance(Instance inst) throws NoSupportForMissingValuesException {
-        double yes_prob;
-        double no_prob;
-        return 0.0d;
+    	System.out.println(inst.stringValue(0) +", "+ inst.stringValue(1) + ", " + inst.stringValue(2) + ", " + inst.stringValue(3));
+    	double attr_affect_yes_prob = 1.0;
+    	double attr_affect_no_prob = 1.0;
+    	for (int attr_index = 0; attr_index < inst.numAttributes()-1; attr_index++){
+    		String attr_value = inst.stringValue(attr_index);
+    		//value affect yes count / yes overall
+    		attr_affect_yes_prob *= (double)attr_values_count.get(attr_index).get(attr_value).get(0)/(double)yes_count;
+    		//value affect no count / no overall
+    		attr_affect_no_prob *= (double)attr_values_count.get(attr_index).get(attr_value).get(1)/(double)no_count;
+    	}
+    	
+        double yes_prob = ((double)yes_count/(double)(yes_count+no_count)) * attr_affect_yes_prob;
+        double no_prob = ((double)no_count/(double)(yes_count+no_count)) * attr_affect_no_prob;
+        if (yes_prob >= no_prob){
+        	return 0;
+        } else {
+        	return 1;
+    	}
     }
     
     /*
