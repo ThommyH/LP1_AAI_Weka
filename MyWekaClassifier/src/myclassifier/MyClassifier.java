@@ -42,7 +42,8 @@ public class MyClassifier extends Classifier
     		Map<String, List<Integer>> new_map = new HashMap<String, List<Integer>>();
     		attr_values_count.add(new_map);
     		if (data.attribute(i).isNumeric()) {
-    			numericAtt.add(data.attribute(i).toString());
+    			numericAtt.add(data.attribute(i).name());
+    			System.out.println(data.attribute(i).name());
     		}
     	}
     	
@@ -55,8 +56,8 @@ public class MyClassifier extends Classifier
     			no_count += 1;
     		}
     		for (int attr_nu = 0; attr_nu < num_attr-1; attr_nu++){
-    			if (numericAtt.contains(inst.stringValue(attr_nu))) {
-    				countValuesNumerical(attr_nu, inst, attr_nu);
+    			if (numericAtt.contains(inst.attribute(attr_nu).name())) {
+    				countValuesNumerical(attr_nu, inst, num_attr);
     			} else {
     				countValuesNominal(attr_nu, inst, num_attr);
     			}
@@ -74,7 +75,6 @@ public class MyClassifier extends Classifier
 			yes_no_list.add(0);
 			attr_map.put(attr_val, yes_no_list);
 		}
-		
 		if (inst.stringValue(num_attr-1).equals("yes")){
 			attr_map.get(attr_val).set(0, (Integer)attr_map.get(attr_val).get(0)+1); 
 		} else {
@@ -85,18 +85,24 @@ public class MyClassifier extends Classifier
     
     private void countValuesNumerical(int attr_nu, Instance inst, int num_attr) {
     	Map<String, List<Integer>> attr_map = attr_values_count.get(attr_nu);
-    	String attr_val = inst.stringValue(attr_nu);
+    	String attr_name = inst.attribute(attr_nu).name();
+		if (!attr_map.containsKey(attr_name)){
+			List<Integer> yes_no_list = new ArrayList<Integer>();
+			yes_no_list.add(0);
+			yes_no_list.add(0);
+			attr_map.put(attr_name, yes_no_list);
+		}
     	if (inst.stringValue(num_attr-1).equals("yes")) {
     		if (yes_count != 1) {
-    			attr_map.get(attr_val).set(0, (int) (((attr_map.get(attr_val).get(0))*(yes_count-1)+ inst.value(num_attr-1)))/yes_count);
+    			attr_map.get(attr_name).set(0, (int) (((attr_map.get(attr_name).get(0))*(yes_count-1)+ inst.value(num_attr-1)))/yes_count);
     		} else {
-    			attr_map.get(attr_val).set(0, (int) (inst.value(num_attr-1)));
+    			attr_map.get(attr_name).set(0, (int) (inst.value(num_attr-1)));
     		}
     	} else {
     		if (no_count != 1) {
-    			attr_map.get(attr_val).set(1, (int) (((attr_map.get(attr_val).get(1))*(no_count-1)+ inst.value(num_attr-1)))/no_count);
+    			attr_map.get(attr_name).set(1, (int) (((attr_map.get(attr_name).get(1))*(no_count-1)+ inst.value(num_attr-1)))/no_count);
     		} else {
-    			attr_map.get(attr_val).set(1, (int) (inst.value(num_attr-1)));
+    			attr_map.get(attr_name).set(1, (int) (inst.value(num_attr-1)));
     		}
     	}
     }
@@ -107,7 +113,7 @@ public class MyClassifier extends Classifier
      * trained classifier.
      */
     public double classifyInstance(Instance inst) throws NoSupportForMissingValuesException {
-    	System.out.println(inst.stringValue(0) +", "+ inst.stringValue(1) + ", " + inst.stringValue(2) + ", " + inst.stringValue(3));
+//    	System.out.println(inst.stringValue(0) +", "+ inst.stringValue(1) + ", " + inst.stringValue(2) + ", " + inst.stringValue(3));
     	double attr_affect_yes_prob = 1.0;
     	double attr_affect_no_prob = 1.0;
     	for (int attr_index = 0; attr_index < inst.numAttributes()-1; attr_index++){
