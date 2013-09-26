@@ -87,9 +87,17 @@ public class MyClassifier extends Classifier
     	Map<String, List<Integer>> attr_map = attr_values_count.get(attr_nu);
     	String attr_val = inst.stringValue(attr_nu);
     	if (inst.stringValue(num_attr-1).equals("yes")) {
-    		attr_map.get(attr_val).set(0, (int) (((attr_map.get(attr_val).get(0))*(yes_count-1)+ inst.value(num_attr-1)))/yes_count);
+    		if (yes_count != 1) {
+    			attr_map.get(attr_val).set(0, (int) (((attr_map.get(attr_val).get(0))*(yes_count-1)+ inst.value(num_attr-1)))/yes_count);
+    		} else {
+    			attr_map.get(attr_val).set(0, (int) (inst.value(num_attr-1)));
+    		}
     	} else {
-    		attr_map.get(attr_val).set(1, (int) (((attr_map.get(attr_val).get(1))*(yes_count-1)+ inst.value(num_attr-1)))/yes_count);
+    		if (no_count != 1) {
+    			attr_map.get(attr_val).set(1, (int) (((attr_map.get(attr_val).get(1))*(no_count-1)+ inst.value(num_attr-1)))/no_count);
+    		} else {
+    			attr_map.get(attr_val).set(1, (int) (inst.value(num_attr-1)));
+    		}
     	}
     }
     
