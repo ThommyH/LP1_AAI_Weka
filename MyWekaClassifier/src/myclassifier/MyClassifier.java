@@ -87,9 +87,9 @@ public class MyClassifier extends Classifier
     	Map<String, List<Integer>> attr_map = attr_values_count.get(attr_nu);
     	String attr_val = inst.stringValue(attr_nu);
     	if (inst.stringValue(num_attr-1).equals("yes")) {
-    		attr_map.get(attr_val).set(0, (int) (attr_map.get(attr_val).get(0)+ inst.value(num_attr-1)));
+    		attr_map.get(attr_val).set(0, (int) (((attr_map.get(attr_val).get(0))*(yes_count-1)+ inst.value(num_attr-1)))/yes_count);
     	} else {
-    		attr_map.get(attr_val).set(1, (int) (attr_map.get(attr_val).get(1)+inst.value(num_attr-1)));
+    		attr_map.get(attr_val).set(1, (int) (((attr_map.get(attr_val).get(1))*(yes_count-1)+ inst.value(num_attr-1)))/yes_count);
     	}
     }
     
@@ -128,7 +128,7 @@ public class MyClassifier extends Classifier
         try {
             String[] params = new String[4];
             params[0] = "-t";
-            params[1] = "dataset/weather.nominal.arff";
+            params[1] = "dataset/weather.numeric.arff";
             params[2] = "-x";
             params[3] = "10";
             System.out.println(Evaluation.evaluateModel(new MyClassifier(), params));
