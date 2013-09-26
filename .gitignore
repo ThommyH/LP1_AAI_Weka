@@ -4,3 +4,4 @@ bin/*
 .classpath
 MyWekaClassifier/src/myclassifier/MyClassifier.java.orig
 .DS_Store
+RemoteSystemsTempFiles/
