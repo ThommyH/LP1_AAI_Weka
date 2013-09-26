@@ -3,3 +3,4 @@ bin/*
 *.metadata
 .classpath
 MyWekaClassifier/src/myclassifier/MyClassifier.java.orig
+.DS_Store
