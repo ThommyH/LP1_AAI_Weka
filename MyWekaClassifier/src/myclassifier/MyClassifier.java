@@ -7,6 +7,7 @@ package myclassifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,8 @@ import weka.core.*;
 
 public class MyClassifier extends Classifier 
 {
-	private ArrayList<Map<String, List<Integer>>> attr_values_count;
+	private ArrayList<Map<String, List<Double>>> attr_values_count;
+	private ArrayList<String> numericAtt;
 	private int yes_count;
 	private int no_count;
 	
@@ -27,7 +29,7 @@ public class MyClassifier extends Classifier
     public void buildClassifier(Instances data){
     	int num_inst = data.numInstances();
     	int num_attr = data.numAttributes();
-    	ArrayList<String> numericAtt = new ArrayList<String>(); 
+    	numericAtt = new ArrayList<String>(); 
     	yes_count = 0;
     	no_count = 0;
     	// list of maps, each map belongs to 1 attribute (same index as in data)
@@ -36,10 +38,10 @@ public class MyClassifier extends Classifier
     	// and 2nd the amount of instances where the attribute belongs to no (last attribute in data)
     	// Version numerical attributes:	just one list for the attribute. 
     	//									1st position = average yes, 2nd position = average no
-    	attr_values_count = new ArrayList<Map<String, List<Integer>>>();
+    	attr_values_count = new ArrayList<Map<String, List<Double>>>();
     	
     	for (int i = 0; i < num_attr-1; i++){
-    		Map<String, List<Integer>> new_map = new HashMap<String, List<Integer>>();
+    		Map<String, List<Double>> new_map = new HashMap<String, List<Double>>();
     		attr_values_count.add(new_map);
     		if (data.attribute(i).isNumeric()) {
     			numericAtt.add(data.attribute(i).name());
@@ -63,47 +65,51 @@ public class MyClassifier extends Classifier
     			}
     		}
     	}
+    	Iterator<String> itr = numericAtt.iterator();
+        while (itr.hasNext()) {
+          String element = itr.next();
+          
+        }
     }
     
     private void countValuesNominal(int attr_nu, Instance inst, int num_attr){
-    	Map<String, List<Integer>> attr_map = attr_values_count.get(attr_nu);
+    	Map<String, List<Double>> attr_map = attr_values_count.get(attr_nu);
 		String attr_val = inst.stringValue(attr_nu);
 		System.out.println(attr_val);
 		if (!attr_map.containsKey(attr_val)){
-			List<Integer> yes_no_list = new ArrayList<Integer>();
-			yes_no_list.add(0);
-			yes_no_list.add(0);
+			List<Double> yes_no_list = new ArrayList<Double>();
+			yes_no_list.add((double) 0);
+			yes_no_list.add((double) 0);
 			attr_map.put(attr_val, yes_no_list);
 		}
 		if (inst.stringValue(num_attr-1).equals("yes")){
-			attr_map.get(attr_val).set(0, (Integer)attr_map.get(attr_val).get(0)+1); 
+			attr_map.get(attr_val).set(0, attr_map.get(attr_val).get(0)+1); 
 		} else {
-			attr_map.get(attr_val).set(1, (Integer)attr_map.get(attr_val).get(1)+1);
+			attr_map.get(attr_val).set(1, attr_map.get(attr_val).get(1)+1);
 		}
     }
 
     
     private void countValuesNumerical(int attr_nu, Instance inst, int num_attr) {
-    	Map<String, List<Integer>> attr_map = attr_values_count.get(attr_nu);
+    	Map<String, List<Double>> attr_map = attr_values_count.get(attr_nu);
     	String attr_name = inst.attribute(attr_nu).name();
 		if (!attr_map.containsKey(attr_name)){
-			List<Integer> yes_no_list = new ArrayList<Integer>();
-			yes_no_list.add(0);
-			yes_no_list.add(0);
+			List<Double> yes_no_list = new ArrayList<Double>();
+			yes_no_list.add((double) 0);
+			yes_no_list.add((double) 0);
+			yes_no_list.add((double) 0);
+			yes_no_list.add((double) 0);
 			attr_map.put(attr_name, yes_no_list);
 		}
-    	if (inst.stringValue(num_attr-1).equals("yes")) {
-    		if (yes_count != 1) {
-    			attr_map.get(attr_name).set(0, (int) (((attr_map.get(attr_name).get(0))*(yes_count-1)+ inst.value(num_attr-1)))/yes_count);
-    		} else {
-    			attr_map.get(attr_name).set(0, (int) (inst.value(num_attr-1)));
-    		}
+		
+		if (inst.stringValue(num_attr-1).equals("yes")) {
+			attr_map.get(attr_name).set(0, attr_map.get(attr_name).get(0)+1); 
+    		attr_map.get(attr_name).set(1, (attr_map.get(attr_name).get(1) + inst.value(num_attr-1)));
+    		attr_map.get(attr_name).add(inst.value(num_attr-1));
     	} else {
-    		if (no_count != 1) {
-    			attr_map.get(attr_name).set(1, (int) (((attr_map.get(attr_name).get(1))*(no_count-1)+ inst.value(num_attr-1)))/no_count);
-    		} else {
-    			attr_map.get(attr_name).set(1, (int) (inst.value(num_attr-1)));
-    		}
+    		attr_map.get(attr_name).set(2, attr_map.get(attr_name).get(2)+1); 
+    		attr_map.get(attr_name).set(3, (attr_map.get(attr_name).get(3) + inst.value(num_attr-1)));
+    		attr_map.get(attr_name).add(inst.value(num_attr-1));
     	}
     }
     
