@@ -164,24 +164,51 @@ public class TestBoard {
 							 0,0,0,0,0,0,0};
 		board.setField(boardArray);
 		board.setPlayer(1);
-		// 1st move (move: 0) surround the board one time and last bean were put in the house 
+		// move: 0 surround the board one time and last bean were put in amboo no 0
 		board.performMove(0);
 		byte[] boardAfter1Move = {1,2,2,2,2,2,2,
 				 				  2,1,1,1,1,1,0};
 		assertTrue(Arrays.equals(board.getField(), boardAfter1Move));
 		assertTrue(board.getPlayer() == 2);
-		
+		// second test
 		byte[] boardArray2 = {0,0,0,0,0,0,0,
 							13,0,0,0,0,0,0};
 		board.setField(boardArray2);
 		board.setPlayer(2);
+		// surround board and will steal one bean from the opponent because the move ends on the beginning field
 		board.performMove(7);
 		byte[] boardAfter3Move = {1,1,1,1,1,0,0,
 				 				  0,1,1,1,1,1,3};
 		assertTrue(Arrays.equals(board.getField(), boardAfter3Move));
 		assertTrue(board.getPlayer() == 1);
-		
 	}
 	
-
+	@Test
+	public void testWinner(){
+		Board board = new Board();
+		byte[] boardArray = {20,0,0,0,0,0,20,
+							 0,20,0,0,0,0,12};
+		board.setField(boardArray);
+		assertTrue(board.winner() == -1); // game not over
+		
+		byte[] boardArray2 = {0,0,0,0,0,0,20,
+							  0,20,0,0,0,0,32};
+		board.setField(boardArray2);
+		assertTrue(board.winner() == -1); // game not over
+		
+		byte[] boardArray3 = {0,0,0,0,0,0,60,
+							  0,0,0,0,0,0,12};
+		board.setField(boardArray3);
+		assertTrue(board.winner() == 1); // player 1 has won
+		
+		byte[] boardArray4 = {0,0,0,0,0,0,20,
+				 			 0,0,0,0,0,0,52};
+		board.setField(boardArray4);
+		assertTrue(board.winner() == 2); // player 2 wins
+		
+		byte[] boardArray5 = {0,0,0,0,0,0,36,
+				 			  0,0,0,0,0,0,36};
+		board.setField(boardArray5);
+		assertTrue(board.winner() == 0); // game is draw
+	}
 }

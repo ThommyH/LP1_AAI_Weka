@@ -6,6 +6,7 @@ import java.util.Arrays;
 public class Board {
 	
 	private byte[] field;
+	static int AMOUNTOFBEANSAMBOO = 6;
 	private int player;
 	public static final byte[] FIELD_PARTNER = {12,11,10,9,8,7,-1,5,4,3,2,1,0,-1};
 	
@@ -23,8 +24,17 @@ public class Board {
 	}
 	
 	public Board(String codedBoard){
+//		h2;p1a1;p1a2;p1a3;p1a4;p1a5;p1a6;h1;p2a1;p2a2;p2a3;p2a4;p2a5;p2a6;P
+//		  where
+//		       p = player (1,2)
+//		       a = ambo (1-6)
+//		       h = house (1,2)
+//		       P = The player (1 or 2) to make the next move.
+//		  Example:
+//		       p1a2 means the second ambo for player 1
+//		       h2 means the house of player 2.
 		field = new byte[14];
-		// todo: player!
+		
 	}
 	
 	public Board(Board another){
@@ -63,7 +73,7 @@ public class Board {
 	public int winner(){
 		byte pointsP1 = field[6];
 		byte pointsP2 = field[13];
-		if (pointsP1 + pointsP2 == 72){
+		if (pointsP1 + pointsP2 == AMOUNTOFBEANSAMBOO*6*2){
 			if (pointsP1 > pointsP2) return 1;
 			else if (pointsP1 < pointsP2) return 2;
 			else return 0;
