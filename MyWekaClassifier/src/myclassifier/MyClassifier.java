@@ -42,6 +42,7 @@ public class MyClassifier extends Classifier
     	
     	for (int i = 0; i < num_attr-1; i++){
     		Map<String, List<Double>> new_map = new HashMap<String, List<Double>>();
+    		//System.out.println(data.attribute(i).name());
     		attr_values_count.put(data.attribute(i).name(), new_map);
     		if (data.attribute(i).isNumeric()) {
     			List<Double> value_yes_list = new ArrayList<Double>();
@@ -49,7 +50,7 @@ public class MyClassifier extends Classifier
     			new_map.put("yes", value_yes_list);
     			new_map.put("no", value_no_list);
     			numericAtt.put(data.attribute(i).name(), new_map);
-    			System.out.println(data.attribute(i).name());
+    			//System.out.println(data.attribute(i).name());
     		}
     	}
     	
@@ -101,8 +102,9 @@ public class MyClassifier extends Classifier
     private void countValuesNominal(int attr_nu, Instance inst, int num_attr){
     	Map<String, List<Double>> attr_map = attr_values_count.get(inst.attribute(attr_nu).name());
 		String attr_val = inst.stringValue(attr_nu);
-		System.out.println(attr_val);
-		if (!attr_map.containsKey(inst.attribute(attr_nu).name())){
+		//System.out.println(attr_val);
+		//System.out.println(inst.attribute(attr_nu).name());
+		if (!attr_map.containsKey(attr_val)){
 			List<Double> yes_no_list = new ArrayList<Double>();
 			yes_no_list.add((double) 0);
 			yes_no_list.add((double) 0);
@@ -136,7 +138,7 @@ public class MyClassifier extends Classifier
 			count = attr_map.get(attr_name).get(0);
     		attr_map.get(attr_name).set(1, ((attr_map.get(attr_name).get(1) * count + inst.value(attr_nu)) / (count + 1)));
 			attr_map.get(attr_name).set(0, count+1);
-			System.out.println(inst.value(attr_nu));
+			//System.out.println(inst.value(attr_nu));
     		// safe all results of yes
     		numericAtt.get(attr_name).get("yes").add(inst.value(attr_nu));
     	} else {
@@ -154,28 +156,29 @@ public class MyClassifier extends Classifier
      * trained classifier.
      */
     public double classifyInstance(Instance inst) throws NoSupportForMissingValuesException {
-//    	System.out.println(inst.stringValue(0) +", "+ inst.stringValue(1) + ", " + inst.stringValue(2) + ", " + inst.stringValue(3));
+    	//System.out.println(inst.stringValue(0) +", "+ inst.stringValue(1) + ", " + inst.stringValue(2) + ", " + inst.stringValue(3));
     	double attr_affect_yes_prob = 1.0;
     	double attr_affect_no_prob = 1.0;
     	for (int attr_index = 0; attr_index < inst.numAttributes()-1; attr_index++){
-    		//System.out.println(inst.stringValue(attr_index) + " " + inst.attribute(attr_index).name() );
+    		//System.out.println(inst.attribute(attr_index).name() );
     		
     		String attr_name = inst.attribute(attr_index).name();
     		if (numericAtt.containsKey(attr_name)) {
     			double high_yes = (-1) * Math.pow(inst.value(attr_index) - numericAtt.get(attr_name).get(attr_name).get(1), 2) / (2 * Math.pow(numericAtt.get(attr_name).get(attr_name).get(4),2));
-    			attr_affect_yes_prob *= 1 / (Math.sqrt(2 * Math.PI) * numericAtt.get(attr_name).get(attr_name).get(4)) * Math.pow(Math.E, high_yes) ; 
+    			double down_yes = Math.sqrt(2 * Math.PI) * numericAtt.get(attr_name).get(attr_name).get(4);
+    			attr_affect_yes_prob *= (1 / down_yes) * Math.pow(Math.E, high_yes) ; 
     			double high_no = (-1) * Math.pow(inst.value(attr_index) - numericAtt.get(attr_name).get(attr_name).get(3), 2) / (2 * Math.pow(numericAtt.get(attr_name).get(attr_name).get(5),2));
-    			attr_affect_no_prob *= 1 / (Math.sqrt(2 * Math.PI) * numericAtt.get(attr_name).get(attr_name).get(5)) * Math.pow(Math.E, high_no) ; 
+    			double down_no = Math.sqrt(2 * Math.PI) * numericAtt.get(attr_name).get(attr_name).get(5);
+    			attr_affect_no_prob *= (1 / down_no) * Math.pow(Math.E, high_no) ; 
     		} else {
     			String attr_value = inst.stringValue(attr_index);
         		//value affect yes count / yes overall
+    			//System.out.println(attr_values_count.get(attr_name).get(attr_value).get(0));
         		attr_affect_yes_prob *= (double)attr_values_count.get(attr_name).get(attr_value).get(0)/(double)yes_count;
         		//value affect no count / no overall
         		attr_affect_no_prob *= (double)attr_values_count.get(attr_name).get(attr_value).get(1)/(double)no_count;
     		}
     		
-    	//	Map<String, List<Double>> new_map = new HashMap<String, List<Double>>();
-    	//	attr_values_count.put(data.attribute(i).name(), new_map);
     	}
     	
         double yes_prob = ((double)yes_count/(double)(yes_count+no_count)) * attr_affect_yes_prob;
@@ -196,7 +199,7 @@ public class MyClassifier extends Classifier
         try {
             String[] params = new String[4];
             params[0] = "-t";
-            params[1] = "dataset/weather.numeric.arff";
+            params[1] = "dataset/weather.nominal.arff";
             params[2] = "-x";
             params[3] = "10";
             System.out.println(Evaluation.evaluateModel(new MyClassifier(), params));
