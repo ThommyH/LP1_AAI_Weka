@@ -25,6 +25,23 @@ public class TestBoard {
 	}
 	
 	@Test
+	public void stringToBoard(){
+		String boardString = "0;0;0;8;8;8;8;2;7;7;6;6;6;6;2";
+		Board board = new Board(boardString);
+		byte[] boardArray = {0,0,8,8,8,8,2,
+							7,7,6,6,6,6,0};
+		assertTrue(Arrays.equals(board.getField(), boardArray));
+		assertTrue(board.getPlayer() == 2);
+		
+		String boardString2 = "14;1;2;3;4;5;6;7;8;9;10;11;12;13;1";
+		Board board2 = new Board(boardString2);
+		byte[] boardArray2 = {1,2,3,4,5,6,7,
+							8,9,10,11,12,13,14};
+		assertTrue(Arrays.equals(board2.getField(), boardArray2));
+		assertTrue(board2.getPlayer() == 1);
+	}
+	
+	@Test
 	public void testPossibleMoves(){
 		Board board = new Board();
 		byte[] boardArray = {2,0,3,0,1,0,10,

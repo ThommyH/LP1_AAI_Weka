@@ -24,7 +24,7 @@ public class Board {
 	}
 	
 	public Board(String codedBoard){
-//		h2;p1a1;p1a2;p1a3;p1a4;p1a5;p1a6;h1;p2a1;p2a2;p2a3;p2a4;p2a5;p2a6;P
+//		String h2;p1a1;p1a2;p1a3;p1a4;p1a5;p1a6;h1;p2a1;p2a2;p2a3;p2a4;p2a5;p2a6;P
 //		  where
 //		       p = player (1,2)
 //		       a = ambo (1-6)
@@ -33,8 +33,12 @@ public class Board {
 //		  Example:
 //		       p1a2 means the second ambo for player 1
 //		       h2 means the house of player 2.
-		field = new byte[14];
-		
+		this.field = new byte[14];
+		String[] boardSplitted = codedBoard.split(";");
+		for (int i = 0; i<14; i++){
+			this.field[i] = (byte) Integer.parseInt(boardSplitted[(i+1)%14]);
+		}
+		this.player = Integer.parseInt(boardSplitted[14]); 
 	}
 	
 	public Board(Board another){
