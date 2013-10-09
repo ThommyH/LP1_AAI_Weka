@@ -3,6 +3,7 @@ package client_Java;
 import java.io.*;
 import java.net.*;
 
+import AI.AlphaBetaAlgo;
 import AI.Board;
 import AI.MinMaxAlgo;
 
@@ -95,9 +96,10 @@ public class ClientKalaha
 				{
 					// ADD CODE FOR AI
 					Board currentBoard = new Board(reply);
-					MinMaxAlgo minmaxalgo = new MinMaxAlgo(6);
-					minmaxalgo.minmax(6, currentBoard);
-					input = new String(minmaxalgo.getMoveMappedOnServer());
+					AlphaBetaAlgo minmaxalgo = new AlphaBetaAlgo(6);
+					minmaxalgo.startMinMax(currentBoard);
+					input = new String(""+minmaxalgo.getMoveMappedOnServer());
+					System.err.println(input);
 //					input = new String(""+getRandom());
 				}
 

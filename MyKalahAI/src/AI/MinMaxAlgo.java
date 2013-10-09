@@ -62,11 +62,6 @@ public class MinMaxAlgo {
 		return maxValue;
 	}
 
-
-	public String getMoveMappedOnServer() {
-		return (storedMove < 6)? new String(""+(storedMove + 1)) : new String(""+ (storedMove - 6)); 
-	}
-	
 	public void printMove() {
 		System.out.println("Best next Move is: " + this.storedMove);
 	}
