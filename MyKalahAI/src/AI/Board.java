@@ -117,7 +117,11 @@ public class Board {
 		return possibleMoves;
 	}
 	
-	public ArrayList<Integer> possibleMovesPrisorted(){
+	/**
+	 * 
+	 * @return the possible presorted moves of the curren player 
+	 */
+	public ArrayList<Integer> possibleMovesPresorted(){
 		ArrayList<Integer> possibleMoves = new ArrayList<Integer>();
 		int k = ((player == 1)? 0 : 7);
 		int max = k+6;
