@@ -58,6 +58,11 @@ public class MinMaxAlgo {
 		System.out.println("move = " + maxValue);
 		return maxValue;
 	}
+
+
+	public String getMoveMappedOnServer() {
+		return (storedMove < 6)? new String(""+(storedMove + 1)) : new String(""+ (storedMove - 6)); 
+	}
 	
 
 }
