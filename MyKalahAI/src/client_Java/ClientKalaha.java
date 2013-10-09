@@ -90,6 +90,7 @@ public class ClientKalaha
 				}
 				else
 				{
+					// ADD CODE FOR AI
 					input = new String(""+getRandom() );
 				}
 

@@ -106,9 +106,9 @@ public class Board {
 		field[move] = 0; // empty the amboo
 		int offset = 0; // for jumping over the house of the opponent
 		// fillup the following amboos/houses with the beans
+		int indexHouseOfOpponent = (player==1)? 13 : 6;
 		for (int i = 1; i <= beansFromAmbo; i++){
 			int fieldindex = (move+i+offset)%14;
-			int indexHouseOfOpponent = (player==1)? 13 : 6;
 			if (fieldindex == indexHouseOfOpponent){
 				offset += 1;
 				fieldindex = (move+i+offset)%14;
