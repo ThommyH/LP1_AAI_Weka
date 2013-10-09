@@ -26,22 +26,24 @@ public class AlphaBetaAlgo {
 	 * Implementation of the algorithm
 	 * 
 	 * @param deep		current deep of the tree
-	 * @param board		representation of the current gamepostion
+	 * @param board		representation of the current gameposition
 	 * @param alpha		best value for max
 	 * @param beta		best value for min
 	 * @return
 	 */
 	public int minmax(int deep, Board board, int alpha, int beta) {
-		if (deep == 0 || board.winner() ==1) 
+		if (deep == 0 || board.willAnyWin() == true) 
 			return board.evaluate();
 		int maxValue = alpha; 
+		
 		ArrayList<Integer> moves = board.possibleMoves();
 		java.util.Iterator<Integer> iter = moves.iterator();
-	
+		
 		while (iter.hasNext()) {
 			Board board_new = new Board(board);
 			int move = iter.next();
-			board.performMove(move);
+			board_new.performMove(move);
+			// if ich wieder dran: int value = minmax(deep, board_new, alpha, beta)
 			int value = minmax(deep-1, board_new, -beta, -maxValue);
 			if (value > maxValue) {
 				maxValue = value;

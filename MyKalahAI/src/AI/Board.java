@@ -66,6 +66,25 @@ public class Board {
 	public void setPlayer(int i) {
 		this.player = i;
 	}
+	
+	private int getPoints(int pplayer) {
+		if (player == 1) 
+			return this.field[6];
+		else
+			return this.field[13];
+	}
+	
+	/**
+	 * 
+	 * @param fieldindex
+	 * @return number of beans of the opposing field towards
+	 */
+	private int getFieldParnter(int fieldindex) {
+		int mirroredField = FIELD_PARTNER[fieldindex];
+		return this.field[mirroredField]; 
+	}
+
+	
 
 	//////////
 	// methods
@@ -98,6 +117,30 @@ public class Board {
 		return possibleMoves;
 	}
 	
+	public ArrayList<Integer> possibleMovesPrisorted(){
+		ArrayList<Integer> possibleMoves = new ArrayList<Integer>();
+		int k = ((player == 1)? 0 : 7);
+		int max = k+6;
+		byte[] field_clone = this.getField().clone();
+		for (int p = max; p > k; p--) {
+			if (field_clone[p] == 0 && this.getFieldParnter(p) != 0) {
+				for (int t = p; t > k; t--) {
+					if (field_clone[t] == max-t-1) {
+						possibleMoves.add(0, t);
+						field_clone[t] = 0;
+					}
+				}
+			}
+		}
+		for (int i = k; i < max; i++){
+			if (field_clone[i] != 0) 
+				if (field_clone[i] == max-i) 
+					possibleMoves.add(0, i);
+				else
+					possibleMoves.add(i);
+		}
+		return possibleMoves;
+	}
 	
 	/**
 	 * actual movement of beans
@@ -171,8 +214,48 @@ public class Board {
 		else return true;
 	}
 	
+	/**
+	 * If any one has more than the half of the beans,
+	 * the winner of the game is decided
+	 * 
+	 * @return true if it is decided who will win 
+	 */
+	public Boolean willAnyWin() {
+		if (this.willIWin() || this.willOtherWin())
+			return true;
+		else
+			return false;
+	}
+
+	/**
+	 * 
+	 * @return true if current player will win
+	 */
+	private Boolean willIWin() {
+		int pointsToWin = AMOUNTOFBEANSAMBOO*12;
+		if (getPoints(this.getPlayer()) > pointsToWin) 
+			return true;
+		else 
+			return false;
+	}
+	
+	/**
+	 * 
+	 * @return true if current player will lose
+	 */
+	private Boolean willOtherWin() {
+		int pointsToWin = AMOUNTOFBEANSAMBOO*12;
+		if (getPoints(3-this.getPlayer()) > pointsToWin) 
+			return true;
+		else 
+			return false;
+	}
+	
 	public int evaluate() {
-		
+		if (willIWin()) 
+			return Integer.MAX_VALUE;
+		else if (willOtherWin())
+			return Integer.MIN_VALUE;
 		return this.winner();
 	}
 }

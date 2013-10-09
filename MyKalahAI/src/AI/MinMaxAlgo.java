@@ -15,9 +15,12 @@ public class MinMaxAlgo {
 	 * Constructor
 	 * @param startdeep
 	 */
-	public MinMaxAlgo(int startdeep) {
-		this.startdeep = startdeep;
-		System.out.println("new MinMaxAlgo started");
+	public MinMaxAlgo() {
+	}
+	
+	public int startMinMax(int deep, Board board) {
+		this.startdeep = deep;
+		return this.minmax(deep, board);
 	}
 	
 	
@@ -30,10 +33,10 @@ public class MinMaxAlgo {
 	 * @param beta		best value for min
 	 * @return
 	 */
-	public int minmax(int deep, Board board) {
-		System.out.println("start algo!");
-		if (deep == 0 || board.winner() ==1) {
-			System.out.println("deep = " + deep + " and board.winner = " + board.winner());
+	private int minmax(int deep, Board board) {
+		//System.out.println("start algo!");
+		if (deep == 0 || board.willAnyWin() == true) {
+			//System.out.println("deep = " + deep + " and board.winner = " + board.winner());
 			return board.evaluate();
 		}
 		int maxValue = Integer.MIN_VALUE; 
@@ -43,20 +46,24 @@ public class MinMaxAlgo {
 		while (iter.hasNext()) {
 			Board board_new = new Board(board);
 			int move = iter.next();
-			System.out.println("next move is " + move);
-			System.out.println("player is " + board.getPlayer());
+			//System.out.println("next move is " + move);
+			//System.out.println("player is " + board.getPlayer());
 			board_new.performMove(move);
 			int value = minmax(deep-1, board_new);
+			//System.out.println("value is " + value + " and maxValue is " + maxValue);
 			if (value > maxValue) {
 				maxValue = value;
 				if (deep == startdeep) {
-					storedMove = move;
+					this.storedMove = move;
 				}
 			}
 			
 		}
-		System.out.println("move = " + maxValue);
 		return maxValue;
+	}
+	
+	public void printMove() {
+		System.out.println("Best next Move is: " + this.storedMove);
 	}
 	
 
