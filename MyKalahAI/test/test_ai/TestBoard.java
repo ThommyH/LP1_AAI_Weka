@@ -199,7 +199,7 @@ public class TestBoard {
 		byte[] boardArray3 = {0,0,0,0,0,0,60,
 							  0,0,0,0,0,0,12};
 		board.setField(boardArray3);
-		assertTrue(board.winner() == 1); // player 1 has won
+		assertTrue(board.winner() == 1); // player 1 wins
 		
 		byte[] boardArray4 = {0,0,0,0,0,0,20,
 				 			 0,0,0,0,0,0,52};
