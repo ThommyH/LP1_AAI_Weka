@@ -21,6 +21,10 @@ public class AlphaBetaAlgo {
 	public AlphaBetaAlgo(int startdeep) {
 		this.startdeep = startdeep;
 	}
+	
+	public int startMinMax(Board board) {
+		return this.minmax(startdeep, board, Integer.MAX_VALUE, Integer.MIN_VALUE);
+	}
 
 	/**
 	 * Implementation of the algorithm
@@ -31,7 +35,7 @@ public class AlphaBetaAlgo {
 	 * @param beta		best value for min
 	 * @return
 	 */
-	public int minmax(int deep, Board board, int alpha, int beta) {
+	private int minmax(int deep, Board board, int alpha, int beta) {
 		if (deep == 0 || board.willAnyWin() == true) 
 			return board.evaluate();
 		int maxValue = alpha; 
@@ -55,6 +59,11 @@ public class AlphaBetaAlgo {
 			
 		}
 		return maxValue;
-	}	
+	}
+	
+	public String getMoveMappedOnServer() {
+		System.err.println("premapped: "+storedMove);
+		return (storedMove < 6)? new String(""+(storedMove + 1)) : new String(""+ (storedMove - 6)); 
+	}
 
 }

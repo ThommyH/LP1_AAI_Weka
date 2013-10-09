@@ -63,6 +63,10 @@ public class Board {
 		return player;
 	}
 
+	public int getOtherPlayer(){
+		return (3 - player);
+	}
+
 	public void setPlayer(int i) {
 		this.player = i;
 	}
@@ -187,9 +191,10 @@ public class Board {
 		}
 		// if player 1/2 reached with his last move his house, he have a new move
 		// else it's the other ones move 
-		if ((player == 1 && indexEndfield == 6) || (player == 2 && indexEndfield == 13)) return true;
-		else {
-			player = ((player == 1)? 2 : 1);
+		if ((player == 1 && indexEndfield == 6) || (player == 2 && indexEndfield == 13)){
+			return true;
+		} else {
+			player = getOtherPlayer();
 			return false;
 		}
 	}
@@ -249,7 +254,7 @@ public class Board {
 	 */
 	private Boolean willOtherWin() {
 		int pointsToWin = AMOUNTOFBEANSAMBOO*12;
-		if (getPoints(3-this.getPlayer()) > pointsToWin) 
+		if (getPoints(getOtherPlayer()) > pointsToWin) 
 			return true;
 		else 
 			return false;
@@ -260,6 +265,6 @@ public class Board {
 			return Integer.MAX_VALUE;
 		else if (willOtherWin())
 			return Integer.MIN_VALUE;
-		return this.winner();
+		return getPoints(getPlayer()) - getPoints(getOtherPlayer());
 	}
 }
