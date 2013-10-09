@@ -166,4 +166,9 @@ public class Board {
 		else if (field[move] == 0) return false;
 		else return true;
 	}
+	
+	public int evaluate() {
+		
+		return this.winner();
+	}
 }
