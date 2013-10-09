@@ -1,5 +1,4 @@
-bin/*
-*.class
+*/bin/*
 *.metadata
 .classpath
 MyWekaClassifier/src/myclassifier/MyClassifier.java.orig
