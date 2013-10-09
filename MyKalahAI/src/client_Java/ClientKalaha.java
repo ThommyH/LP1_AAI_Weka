@@ -3,6 +3,9 @@ package client_Java;
 import java.io.*;
 import java.net.*;
 
+import AI.Board;
+import AI.MinMaxAlgo;
+
 public class ClientKalaha
 {
 	private int player;
@@ -91,7 +94,11 @@ public class ClientKalaha
 				else
 				{
 					// ADD CODE FOR AI
-					input = new String(""+getRandom() );
+					Board currentBoard = new Board(reply);
+					MinMaxAlgo minmaxalgo = new MinMaxAlgo(6);
+					minmaxalgo.minmax(6, currentBoard);
+					input = new String(minmaxalgo.getMoveMappedOnServer());
+//					input = new String(""+getRandom());
 				}
 
 				if(input.toUpperCase().startsWith("N") )
