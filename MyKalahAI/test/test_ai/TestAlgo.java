@@ -2,6 +2,8 @@ package test_ai;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 
 import org.junit.Test;
 
@@ -50,6 +52,47 @@ public class TestAlgo {
 		board.setField(boardArray);
 		board.setPlayer(2);
 		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6);
+		alphaBeta.startMinMax(board);
 		assertTrue(alphaBeta.storedMove != 0);
+	}
+	
+	@Test
+	public void debugTestcase2(){
+		// too long history
+		Board board = new Board();
+		byte[] boardArray = {0,0,4,0,1,0,50,
+							 0,0,0,0,3,1,13};
+		board.setField(boardArray);
+		board.setPlayer(2);
+		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6);
+		alphaBeta.startMinMax(board);
+		System.out.println(alphaBeta.storedMove);
+		assertTrue(alphaBeta.storedMove != 0);
+	}
+	
+	@Test
+	public void debugTestcase3(){
+		// last move
+		Board board = new Board();
+		byte[] boardArray = {0,0,0,0,1,0,40,
+							 0,1,0,0,0,0,30};
+		board.setField(boardArray);
+		board.setPlayer(2);
+		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6);
+		alphaBeta.startMinMax(board);
+		System.out.println(alphaBeta.storedMove);
+		assertTrue(alphaBeta.storedMove != 0);
+	}
+	
+	@Test
+	public void testPresorting(){
+		// just for trying out, not a real test
+		Board board = new Board();
+		byte[] boardArray = {1,3,0,1,2,1,11,
+				  			1,0,1,1,0,1,5};
+		board.setField(boardArray);
+		board.setPlayer(2);
+		ArrayList<Integer> moves = board.possibleMovesPresorted();
+		System.out.println(moves);
 	}
 }

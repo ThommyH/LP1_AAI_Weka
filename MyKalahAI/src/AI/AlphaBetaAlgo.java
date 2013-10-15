@@ -23,7 +23,7 @@ public class AlphaBetaAlgo {
 	}
 	
 	public int startMinMax(Board board) {
-		return this.minmax(startdeep, board, Integer.MAX_VALUE, Integer.MIN_VALUE);
+		return this.minmax(startdeep, board, Integer.MIN_VALUE + 10, Integer.MAX_VALUE - 10);
 	}
 
 	/**
@@ -36,25 +36,33 @@ public class AlphaBetaAlgo {
 	 * @return
 	 */
 	private int minmax(int deep, Board board, int alpha, int beta) {
-		if (deep == 0 || board.willAnyWin() == true) 
-			return board.evaluate();
+		// abbruch board.willAnyWin() == true
+		ArrayList<Integer> moves = board.possibleMovesPresorted();
+		if (deep == 0 || moves.size() == 0){ 
+			int eval = board.evaluate();
+			return eval;
+		}
 		int maxValue = alpha; 
-		
-		ArrayList<Integer> moves = board.possibleMoves();
-		java.util.Iterator<Integer> iter = moves.iterator();
-		
-		while (iter.hasNext()) {
+		for (int move : moves){
 			Board board_new = new Board(board);
-			int move = iter.next();
-			board_new.performMove(move);
-			// if ich wieder dran: int value = minmax(deep, board_new, alpha, beta)
-			int value = minmax(deep-1, board_new, -beta, -maxValue);
+			boolean hasAnotherMove = board_new.performMove(move);
+			int value = 0;
+			// if we can do another move we will try to move it right away
+			if (hasAnotherMove){
+				value = minmax(deep-1, board_new, maxValue, beta);
+			} else {
+				value = -minmax(deep-1, board_new, -beta, -maxValue);
+			}
+			if (deep == getStartdeep()){
+				System.err.println(move +" -->" + value);
+			}
 			if (value > maxValue) {
 				maxValue = value;
-				if (maxValue >= beta)
-					break;
-				if (deep == startdeep) 
-					storedMove = move;
+				if (maxValue < beta){
+					if (deep == startdeep){ 
+						storedMove = move;
+					}
+				}
 			}
 			
 		}
@@ -64,6 +72,10 @@ public class AlphaBetaAlgo {
 	public String getMoveMappedOnServer() {
 		System.err.println("premapped: "+storedMove);
 		return (storedMove < 6)? new String(""+(storedMove + 1)) : new String(""+ (storedMove - 6)); 
+	}
+	
+	public int getStartdeep() {
+		return startdeep;
 	}
 
 }

@@ -71,8 +71,8 @@ public class Board {
 		this.player = i;
 	}
 	
-	private int getPoints(int pplayer) {
-		if (player == 1) 
+	private int getPoints(int forPlayer) {
+		if (forPlayer == 1) 
 			return this.field[6];
 		else
 			return this.field[13];
@@ -83,7 +83,7 @@ public class Board {
 	 * @param fieldindex
 	 * @return number of beans of the opposing field towards
 	 */
-	private int getFieldParnter(int fieldindex) {
+	private int getNumbersOfBeansInFieldPartner(int fieldindex) {
 		int mirroredField = FIELD_PARTNER[fieldindex];
 		return this.field[mirroredField]; 
 	}
@@ -123,30 +123,36 @@ public class Board {
 	
 	/**
 	 * 
-	 * @return the possible presorted moves of the curren player 
+	 * @return the possible presorted moves of the current player 
 	 */
 	public ArrayList<Integer> possibleMovesPresorted(){
 		ArrayList<Integer> possibleMoves = new ArrayList<Integer>();
-		int k = ((player == 1)? 0 : 7);
-		int max = k+6;
-		byte[] field_clone = this.getField().clone();
-		for (int p = max; p > k; p--) {
-			if (field_clone[p] == 0 && this.getFieldParnter(p) != 0) {
-				for (int t = p; t > k; t--) {
-					if (field_clone[t] == max-t-1) {
+		int minField = (player == 1)? 0 : 7;
+		int maxField = minField+5;
+		byte[] field_clone = getField().clone();
+		for (int p = maxField; p >= minField; p--) {
+			//System.out.println("p ->" + p);
+			if (field_clone[p] == 0 && getNumbersOfBeansInFieldPartner(p) != 0) {
+				System.out.println("field partner for:" + p + "->" + getNumbersOfBeansInFieldPartner(p));
+				for (int t = p-1; t >= minField; t--) {
+					if (field_clone[t] == p - t) {
 						possibleMoves.add(0, t);
 						field_clone[t] = 0;
 					}
 				}
 			}
 		}
-		for (int i = k; i < max; i++){
-			if (field_clone[i] != 0) 
-				if (field_clone[i] == max-i) 
+		for (int i = minField; i <= maxField; i++){
+			if (field_clone[i] != 0) {
+				if (field_clone[i] == maxField+1-i) 
 					possibleMoves.add(0, i);
 				else
 					possibleMoves.add(i);
+			}
 		}
+		System.out.println(Arrays.toString(field));
+		System.out.println(possibleMoves);
+		System.out.println();
 		return possibleMoves;
 	}
 	
@@ -241,8 +247,8 @@ public class Board {
 	 * @return true if current player will win
 	 */
 	private Boolean willIWin() {
-		int pointsToWin = AMOUNTOFBEANSAMBOO*12;
-		if (getPoints(this.getPlayer()) > pointsToWin) 
+		int pointsToWin = AMOUNTOFBEANSAMBOO*6;
+		if (getPoints(getPlayer()) > pointsToWin) 
 			return true;
 		else 
 			return false;
@@ -253,7 +259,7 @@ public class Board {
 	 * @return true if current player will lose
 	 */
 	private Boolean willOtherWin() {
-		int pointsToWin = AMOUNTOFBEANSAMBOO*12;
+		int pointsToWin = AMOUNTOFBEANSAMBOO*6;
 		if (getPoints(getOtherPlayer()) > pointsToWin) 
 			return true;
 		else 
@@ -261,10 +267,14 @@ public class Board {
 	}
 	
 	public int evaluate() {
-		if (willIWin()) 
-			return Integer.MAX_VALUE;
-		else if (willOtherWin())
-			return Integer.MIN_VALUE;
+		if (willIWin()){
+			//System.out.println("win");
+			return 10000000;
+		} else if (willOtherWin()){
+			//System.out.println("lose");
+			return -1000000;
+		}
+		//System.out.println("not sure: " + (getPoints(getPlayer()) - getPoints(getOtherPlayer())));
 		return getPoints(getPlayer()) - getPoints(getOtherPlayer());
 	}
 }
