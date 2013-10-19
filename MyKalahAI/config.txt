@@ -1,0 +1,11 @@
+#Kalaha Config file
+#
+#Port number to start the server on
+Port=10101
+#
+#Clients to be started. Can be:
+# RandomClient
+# HumanClient
+#or empty for not starting a client.
+Client1=RandomClient
+Client2=HumanClient
