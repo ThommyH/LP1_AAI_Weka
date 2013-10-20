@@ -127,6 +127,7 @@ public class Board {
 	 */
 	public ArrayList<Integer> possibleMovesPresorted(){
 		ArrayList<Integer> possibleMoves = new ArrayList<Integer>();
+		ArrayList<Integer> possibleMoves_best = new ArrayList<Integer>();
 		int minField = (player == 1)? 0 : 7;
 		int maxField = minField+5;
 		byte[] field_clone = getField().clone();
@@ -136,7 +137,7 @@ public class Board {
 				//System.out.println("field partner for:" + p + "->" + getNumbersOfBeansInFieldPartner(p));
 				for (int t = p-1; t >= minField; t--) {
 					if (field_clone[t] == p - t) {
-						possibleMoves.add(0, t);
+						possibleMoves_best.add(0, t);
 						field_clone[t] = 0;
 					}
 				}
@@ -150,6 +151,7 @@ public class Board {
 					possibleMoves.add(i);
 			}
 		}
+		possibleMoves.addAll(0, possibleMoves_best);
 		//System.out.println(Arrays.toString(field));
 		//System.out.println(possibleMoves);
 		//System.out.println();
