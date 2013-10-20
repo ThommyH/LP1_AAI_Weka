@@ -248,8 +248,9 @@ public class Board {
 	 */
 	private Boolean willIWin() {
 		int pointsToWin = AMOUNTOFBEANSAMBOO*6;
-		if (getPoints(getPlayer()) > pointsToWin) 
+		if (getPoints(getPlayer()) > pointsToWin) {
 			return true;
+		}
 		else 
 			return false;
 	}
@@ -260,8 +261,9 @@ public class Board {
 	 */
 	private Boolean willOtherWin() {
 		int pointsToWin = AMOUNTOFBEANSAMBOO*6;
-		if (getPoints(getOtherPlayer()) > pointsToWin) 
+		if (getPoints(getOtherPlayer()) > pointsToWin) {
 			return true;
+		}
 		else 
 			return false;
 	}

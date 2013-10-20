@@ -108,4 +108,16 @@ public class TestAlgo {
 		alphaBeta.startMinMax(board);
 		assertTrue(alphaBeta.storedMove != -1);
 	}
+	@Test
+	public void willAnyWinTest1(){
+		// just for trying out, not a real test
+		Board board = new Board();
+		byte[] boardArray = {1,0,7,0,5,0,19,
+				  			3,14,0,0,1,13,9};
+		board.setField(boardArray);
+		board.setPlayer(2);
+		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6);
+		alphaBeta.startMinMax(board);
+		assertTrue(alphaBeta.storedMove != -1);
+	}
 }
