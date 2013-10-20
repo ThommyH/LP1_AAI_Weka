@@ -95,4 +95,12 @@ public class TestAlgo {
 		ArrayList<Integer> moves = board.possibleMovesPresorted();
 		System.out.println(moves);
 	}
+	
+	@Test
+	public void testTime() throws InterruptedException{
+		long start = System.nanoTime();
+		System.out.println();
+		Thread.currentThread().sleep(3000);
+		System.out.println(System.nanoTime() - start);
+	}
 }

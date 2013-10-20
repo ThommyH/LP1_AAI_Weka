@@ -13,6 +13,7 @@ public class AlphaBetaAlgo {
 	// how deep the search tree should be
 	public int startdeep;
 	public int storedMove;
+	public long endTime;
 	
 	/**
 	 * Constructor
@@ -22,10 +23,32 @@ public class AlphaBetaAlgo {
 		this.startdeep = startdeep;
 	}
 	
+	/**
+	 * runs alpha beta algorithms with an increasing depth as long as there is some more time left
+	 * maxmum is 3 seconds
+	 * @return
+	 */
+	public int startMinMaxInterativeDeepening(Board board){
+		endTime = System.nanoTime() + 3000000000l;
+		startdeep = 8;
+		int bestMove;
+		int eval = 0;
+		while (timeLeft() > 0){
+			bestMove = storedMove;
+			eval = startMinMax(board);
+			startdeep += 1;
+		}
+		return eval;
+	}
+	
+	private long timeLeft(){
+		return endTime - System.nanoTime();
+	}
+	
 	public int startMinMax(Board board) {
 		return this.minmax(startdeep, board, Integer.MIN_VALUE + 10, Integer.MAX_VALUE - 10);
 	}
-
+	
 	/**
 	 * Implementation of the algorithm
 	 * 
