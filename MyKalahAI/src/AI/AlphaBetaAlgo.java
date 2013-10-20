@@ -20,6 +20,7 @@ public class AlphaBetaAlgo {
 	 */
 	public AlphaBetaAlgo(int startdeep) {
 		this.startdeep = startdeep;
+		this.storedMove = -1;
 	}
 	
 	public int startMinMax(Board board) {
@@ -36,9 +37,11 @@ public class AlphaBetaAlgo {
 	 * @return
 	 */
 	private int minmax(int deep, Board board, int alpha, int beta) {
-		// abbruch board.willAnyWin() == true
 		ArrayList<Integer> moves = board.possibleMovesPresorted();
-		if (deep == 0 || moves.size() == 0){ 
+		if (deep == 0 || moves.size() == 0 || board.willAnyWin()){
+			if (storedMove == -1 && board.willAnyWin()) {
+				storedMove = moves.get(0);
+			}
 			int eval = board.evaluate();
 			return eval;
 		}
@@ -70,7 +73,7 @@ public class AlphaBetaAlgo {
 	}
 	
 	public String getMoveMappedOnServer() {
-		System.err.println("premapped: "+storedMove);
+		//System.err.println("premapped: "+storedMove);
 		return (storedMove < 6)? new String(""+(storedMove + 1)) : new String(""+ (storedMove - 6)); 
 	}
 	

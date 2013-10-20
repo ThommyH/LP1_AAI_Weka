@@ -133,7 +133,7 @@ public class Board {
 		for (int p = maxField; p >= minField; p--) {
 			//System.out.println("p ->" + p);
 			if (field_clone[p] == 0 && getNumbersOfBeansInFieldPartner(p) != 0) {
-				System.out.println("field partner for:" + p + "->" + getNumbersOfBeansInFieldPartner(p));
+				//System.out.println("field partner for:" + p + "->" + getNumbersOfBeansInFieldPartner(p));
 				for (int t = p-1; t >= minField; t--) {
 					if (field_clone[t] == p - t) {
 						possibleMoves.add(0, t);
@@ -150,9 +150,9 @@ public class Board {
 					possibleMoves.add(i);
 			}
 		}
-		System.out.println(Arrays.toString(field));
-		System.out.println(possibleMoves);
-		System.out.println();
+		//System.out.println(Arrays.toString(field));
+		//System.out.println(possibleMoves);
+		//System.out.println();
 		return possibleMoves;
 	}
 	
