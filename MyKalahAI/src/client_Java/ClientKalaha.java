@@ -96,11 +96,10 @@ public class ClientKalaha
 				{
 					// ADD CODE FOR AI
 					Board currentBoard = new Board(reply);
-					AlphaBetaAlgo minmaxalgo = new AlphaBetaAlgo(10);
-					minmaxalgo.startMinMax(currentBoard);
+					AlphaBetaAlgo minmaxalgo = new AlphaBetaAlgo(8);
+					minmaxalgo.startMinMaxInterativeDeepening(currentBoard);
 					input = new String(""+minmaxalgo.getMoveMappedOnServer());
 					System.err.println(input);
-//					input = new String(""+getRandom());
 				}
 
 				if(input.toUpperCase().startsWith("N") )
@@ -141,7 +140,7 @@ public class ClientKalaha
 				{
 					System.out.println("\nWaiting for player 1, press enter to update.");
 				}
-				//terminalInput.readLine();
+				terminalInput.readLine();
 			}
 		}
 	}

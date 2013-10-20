@@ -11,6 +11,7 @@ import org.junit.Test;
 import AI.AlphaBetaAlgo;
 import AI.Board;
 import AI.MinMaxAlgo;
+import AI.NoTimeLeftError;
 
 public class TestAlgo {
 
@@ -30,7 +31,7 @@ public class TestAlgo {
 	}
 	
 	@Test
-	public void testAlphaBeta() {
+	public void testAlphaBeta() throws NoTimeLeftError {
 		Board board = new Board();
 		byte[] boardArray = {0,6,5,6,6,1,0,
 							 4,6,4,7,6,6,0};
@@ -44,7 +45,7 @@ public class TestAlgo {
 	}
 	
 	@Test
-	public void debugTestcase(){
+	public void debugTestcase() throws NoTimeLeftError{
 		// ich: 0,1 ai: 7 ich: 0 ai: 0 --> error
 		Board board = new Board();
 		byte[] boardArray = {0,0,8,8,8,8,10,
@@ -57,7 +58,7 @@ public class TestAlgo {
 	}
 	
 	@Test
-	public void debugTestcase2(){
+	public void debugTestcase2() throws NoTimeLeftError{
 		// too long history
 		Board board = new Board();
 		byte[] boardArray = {0,0,4,0,1,0,50,
@@ -71,7 +72,7 @@ public class TestAlgo {
 	}
 	
 	@Test
-	public void debugTestcase3(){
+	public void debugTestcase3() throws NoTimeLeftError{
 		// last move
 		Board board = new Board();
 		byte[] boardArray = {0,0,0,0,1,0,40,
@@ -97,7 +98,7 @@ public class TestAlgo {
 	}
 	
 	@Test
-	public void willAnyWinTest(){
+	public void willAnyWinTest() throws NoTimeLeftError{
 		// just for trying out, not a real test
 		Board board = new Board();
 		byte[] boardArray = {1,3,0,1,2,1,40,
@@ -119,7 +120,7 @@ public class TestAlgo {
 	}
 
 	@Test
-	public void willAnyWinTest1(){
+	public void willAnyWinTest1() throws NoTimeLeftError{
 		// just for trying out, not a real test
 		Board board = new Board();
 		byte[] boardArray = {1,0,7,0,5,0,19,

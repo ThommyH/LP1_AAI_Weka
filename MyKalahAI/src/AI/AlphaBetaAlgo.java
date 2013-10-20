@@ -14,6 +14,7 @@ public class AlphaBetaAlgo {
 	public int startdeep;
 	public int storedMove;
 	public long endTime;
+	public static long MAXIMAL_COMPUTATION_TIME = 3000000000l; 
 	
 	/**
 	 * Constructor
@@ -22,6 +23,7 @@ public class AlphaBetaAlgo {
 	public AlphaBetaAlgo(int startdeep) {
 		this.startdeep = startdeep;
 		this.storedMove = -1;
+		this.endTime = System.nanoTime() + MAXIMAL_COMPUTATION_TIME;
 	}
 	
 	/**
@@ -30,13 +32,24 @@ public class AlphaBetaAlgo {
 	 * @return
 	 */
 	public int startMinMaxInterativeDeepening(Board board){
-		endTime = System.nanoTime() + 3000000000l;
-		startdeep = 8;
+		endTime = System.nanoTime() + MAXIMAL_COMPUTATION_TIME;
 		int bestMove;
 		int eval = 0;
+		int oldEval = 0;
 		while (timeLeft() > 0){
 			bestMove = storedMove;
-			eval = startMinMax(board);
+			oldEval = eval;
+			try {
+				System.out.println("START ALPHA BETA WITH DEPTH " + startdeep + ". time left (ms): " + timeLeft()/1000000l);
+				System.out.println("best move so far: " + storedMove);
+				eval = startMinMax(board);
+			// no time was left, reset best move from the previous interation because new algorithm did not finished
+			} catch (NoTimeLeftError e) {
+				System.out.println("break");
+				eval = oldEval;
+				storedMove = bestMove;
+				break;
+			}
 			startdeep += 1;
 		}
 		return eval;
@@ -46,7 +59,7 @@ public class AlphaBetaAlgo {
 		return endTime - System.nanoTime();
 	}
 	
-	public int startMinMax(Board board) {
+	public int startMinMax(Board board) throws NoTimeLeftError {
 		return this.minmax(startdeep, board, Integer.MIN_VALUE + 10, Integer.MAX_VALUE - 10);
 	}
 	
@@ -58,8 +71,12 @@ public class AlphaBetaAlgo {
 	 * @param alpha		best value for max
 	 * @param beta		best value for min
 	 * @return
+	 * @throws NoTimeLeftError 
 	 */
-	private int minmax(int deep, Board board, int alpha, int beta) {
+	private int minmax(int deep, Board board, int alpha, int beta) throws NoTimeLeftError {
+		if (timeLeft() <= 0){
+			throw new NoTimeLeftError("3 seconds are over");
+		}
 		ArrayList<Integer> moves = board.possibleMovesPresorted();
 		if (deep == 0 || moves.size() == 0 || board.willAnyWin()){
 			if (storedMove == -1 && board.willAnyWin() && moves.size()!=0) {
