@@ -53,7 +53,7 @@ public class TestAlgo {
 		board.setPlayer(2);
 		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6);
 		alphaBeta.startMinMax(board);
-		assertTrue(alphaBeta.storedMove != 0);
+		assertTrue(alphaBeta.storedMove != -1);
 	}
 	
 	@Test
@@ -66,8 +66,8 @@ public class TestAlgo {
 		board.setPlayer(2);
 		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6);
 		alphaBeta.startMinMax(board);
-		System.out.println(alphaBeta.storedMove);
-		assertTrue(alphaBeta.storedMove != 0);
+		//System.out.println(alphaBeta.storedMove);
+		assertTrue(alphaBeta.storedMove != -1);
 	}
 	
 	@Test
@@ -80,8 +80,8 @@ public class TestAlgo {
 		board.setPlayer(2);
 		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6);
 		alphaBeta.startMinMax(board);
-		System.out.println(alphaBeta.storedMove);
-		assertTrue(alphaBeta.storedMove != 0);
+		//System.out.println(alphaBeta.storedMove);
+		assertTrue(alphaBeta.storedMove != -1);
 	}
 	
 	@Test
@@ -93,7 +93,20 @@ public class TestAlgo {
 		board.setField(boardArray);
 		board.setPlayer(2);
 		ArrayList<Integer> moves = board.possibleMovesPresorted();
-		System.out.println(moves);
+		//System.out.println(moves);
+	}
+	
+	@Test
+	public void willAnyWinTest(){
+		// just for trying out, not a real test
+		Board board = new Board();
+		byte[] boardArray = {1,3,0,1,2,1,40,
+				  			1,0,1,1,0,1,5};
+		board.setField(boardArray);
+		board.setPlayer(2);
+		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6);
+		alphaBeta.startMinMax(board);
+		assertTrue(alphaBeta.storedMove != -1);
 	}
 	
 	@Test
