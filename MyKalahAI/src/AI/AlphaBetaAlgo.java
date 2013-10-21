@@ -105,6 +105,8 @@ public class AlphaBetaAlgo {
 					if (deep == startdeep){ 
 						storedMove = move;
 					}
+				} else {
+					break; // cutoff
 				}
 			}
 			
