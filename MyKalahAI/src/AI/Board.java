@@ -271,14 +271,27 @@ public class Board {
 	}
 	
 	public int evaluate() {
+		return evalWillWin() + evalBeansHouses();
+	}
+
+	/**
+	 * @return 10mio if win is secure or -10mio if lose is secure, otherwise 0
+	 */
+	public int evalWillWin(){
 		if (willIWin()){
-			//System.out.println("win");
 			return 10000000;
 		} else if (willOtherWin()){
-			//System.out.println("lose");
 			return -1000000;
+		} else {
+			return 0;
 		}
-		//System.out.println("not sure: " + (getPoints(getPlayer()) - getPoints(getOtherPlayer())));
+	}
+	
+	/**
+	 * @return difference between players beans in houses and those of the opponent 
+	 */
+	public int evalBeansHouses(){
 		return getPoints(getPlayer()) - getPoints(getOtherPlayer());
 	}
+	
 }

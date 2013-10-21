@@ -1,11 +1,7 @@
 ###### eval-funktion  #######
-- "wird auf jeden fall gewinnen/verlieren, wenn häuser mehr als hälfte der bonen haben"-funktion
-- wenn mehr bohnen im haus = besser
 - wenn gegner keine chance hat sofort ins haus zu kommen bzw durch eine lücke meine steine zu klauen (vllt mehr als 2 muss er klauen??)
 - wenn der gegner nichtmehr direkt ins haus ziehen kann + wenn man selbst die option im nächsten zug hätte
 
 ##### presorting der züge #######
-- die felder vor dem haus gleich nach vorne
-- wenn man gleich in sein haus kann
-- wenn man viele bohnen des gegners natzen kann ist das evtl sogar noch besser als ins haus)
-wenn nur noch ein move, den machen
+- die felder vor dem haus gleich nach vorne, wenn 6. feld == 1 dann kann man gleich rein -> nix zu verlieren
+- wenn man einmal rum kann und dann ins haus (modulo)
