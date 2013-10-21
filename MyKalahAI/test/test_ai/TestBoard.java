@@ -257,7 +257,7 @@ public class TestBoard {
 		board.setField(boardArray);
 		board.setPlayer(1);
 		while (board.winner() == -1){
-			if (board.getPlayer() == 1){
+			if (board.getPlayer() == 2){
 				algoWW_HC = new  AlphaBetaAlgo(11, EvaluationType.WILLWIN_HOUSECOMPARE);
 				algoWW_HC.startMinMaxInterativeDeepening(board);
 				board.performMove(algoWW_HC.storedMove);

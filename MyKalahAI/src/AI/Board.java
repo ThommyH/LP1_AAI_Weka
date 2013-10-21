@@ -341,9 +341,9 @@ public class Board {
 		// critical spaces are those who have at least 1 bean in fieldpartner
 		// current player profit much greater from stealing possibilities. but dont forget the stealing of the opponent!
 		if (player==1){
-			return greatestWinWithStealingMoves(0,5);
+			return greatestWinWithStealingMoves(0,5) + 1;
 		} else {
-			return greatestWinWithStealingMoves(7,12);
+			return greatestWinWithStealingMoves(7,12) + 1;
 		}
 	}
 	
