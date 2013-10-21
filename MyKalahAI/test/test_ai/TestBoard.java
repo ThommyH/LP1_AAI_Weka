@@ -7,7 +7,9 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import AI.AlphaBetaAlgo;
 import AI.Board;
+import AI.EvaluationType;
 
 public class TestBoard {
 
@@ -227,5 +229,44 @@ public class TestBoard {
 				 			  0,0,0,0,0,0,36};
 		board.setField(boardArray5);
 		assertTrue(board.winner() == 0); // game is draw
+	}
+	
+	@Test
+	public void testEvalBeansInAmbos(){
+		Board board = new Board();
+		byte[] boardArray = {9,2,3,4,5,6,20,
+							 1,9,4,3,2,1,2};
+		board.setField(boardArray);
+		board.setPlayer(1);
+		// player 1: 29 beans
+		// player 2: 20 beans
+		assertTrue(board.evalBeansInAmbos() == 9);
+		board.setPlayer(2);
+		// player 1: 29 beans
+		// player 2: 20 beans
+		assertTrue(board.evalBeansInAmbos() == -9);
+	}
+	
+	@Test
+	public void testBattleEvalFunctions(){
+		AlphaBetaAlgo algoWW_HC;
+		AlphaBetaAlgo algoWW_HC_AM;
+		Board board = new Board();
+		byte[] boardArray = {6,6,6,6,6,6,0,
+							6,6,6,6,6,6,0};
+		board.setField(boardArray);
+		board.setPlayer(1);
+		while (board.winner() == -1){
+			if (board.getPlayer() == 1){
+				algoWW_HC = new  AlphaBetaAlgo(11, EvaluationType.WILLWIN_HOUSECOMPARE);
+				algoWW_HC.startMinMaxInterativeDeepening(board);
+				board.performMove(algoWW_HC.storedMove);
+			} else {
+				algoWW_HC_AM = new  AlphaBetaAlgo(11, EvaluationType.WILLWIN_HOUSECOMPARE_SPACES);
+				algoWW_HC_AM.startMinMaxInterativeDeepening(board);
+				board.performMove(algoWW_HC_AM.storedMove);
+			}
+		}
+		System.out.println(Arrays.toString(board.getField()));
 	}
 }

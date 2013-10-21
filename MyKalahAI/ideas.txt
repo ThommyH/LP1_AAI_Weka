@@ -1,7 +1,9 @@
 ###### eval-funktion  #######
 - wenn gegner keine chance hat sofort ins haus zu kommen bzw durch eine lücke meine steine zu klauen (vllt mehr als 2 muss er klauen??)
 - wenn der gegner nichtmehr direkt ins haus ziehen kann + wenn man selbst die option im nächsten zug hätte
+- wenn man lücken hat und diese füllen kann, dann besser
 
 ##### presorting der züge #######
 - die felder vor dem haus gleich nach vorne, wenn 6. feld == 1 dann kann man gleich rein -> nix zu verlieren
 - wenn man einmal rum kann und dann ins haus (modulo)
+- vorsortierung: gucken das mehr klauen besser ist als weniger

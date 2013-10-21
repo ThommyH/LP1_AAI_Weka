@@ -5,7 +5,7 @@ import java.net.*;
 
 import AI.AlphaBetaAlgo;
 import AI.Board;
-import AI.MinMaxAlgo;
+import AI.EvaluationType;
 
 public class ClientKalaha
 {
@@ -108,7 +108,7 @@ public class ClientKalaha
 				{
 					// ADD CODE FOR AI
 					Board currentBoard = new Board(reply);
-					AlphaBetaAlgo minmaxalgo = new AlphaBetaAlgo(startdepth);
+					AlphaBetaAlgo minmaxalgo = new AlphaBetaAlgo(startdepth, EvaluationType.WILLWIN_HOUSECOMPARE);
 					minmaxalgo.startMinMaxInterativeDeepening(currentBoard);
 					input = new String(""+minmaxalgo.getMoveMappedOnServer());
 				}
