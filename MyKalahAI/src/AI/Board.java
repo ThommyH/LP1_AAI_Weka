@@ -293,6 +293,4 @@ public class Board {
 	public int evalBeansHouses(){
 		return getPoints(getPlayer()) - getPoints(getOtherPlayer());
 	}
-	
-	
 }
