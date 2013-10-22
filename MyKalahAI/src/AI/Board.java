@@ -128,22 +128,44 @@ public class Board {
 		int minField = (player == 1)? 0 : 7;
 		int maxField = minField+5;
 		byte[] field_clone = getField().clone();
+		ArrayList<Tupel> values = new ArrayList<Tupel>();
 		for (int p = maxField; p >= minField; p--) {
 			if (field_clone[p] == 0) {
-				int index = 0;
-				for (int k = maxField; k>p; k--) {
-					if (field_clone[k] == 14 - (k - p)) {
-						possibleMoves_best.add(0, k);
-						field_clone[k] = 0;
-						index++;
-					}
-				}
-				if (getNumbersOfBeansInFieldPartner(p) != 0) {
-					for (int t = p-1; t >= minField; t--) {
-						if (field_clone[t] == p - t) {
-							possibleMoves_best.add(index, t);
-							field_clone[t] = 0;
+				//System.out.println("fiel is empty");
+				Tupel tupel = new Tupel(getNumbersOfBeansInFieldPartner(p), p);
+				tupel.printTupel();
+				if (values.isEmpty()) {
+					//System.out.println("values is empty");
+					values.add(tupel);
+				} else {
+					//System.out.println("values is not empty");
+					int i = 0;
+					while (i<values.size()) {
+						if (values.get(i).getValue() < tupel.getValue()) {
+							break;
 						}
+						i++;
+						
+					}
+					values.add(i, tupel);
+				}
+			}
+		}
+		for (Tupel tup : values) {
+			//tup.printTupel();
+			int index = 0;
+			for (int k = maxField; k>tup.getIndex(); k--) {
+				if (field_clone[k] == 14 - (k - tup.getIndex())) {
+					possibleMoves_best.add(0, k);
+					field_clone[k] = 0;
+					index++;
+				}
+			}
+			if (getNumbersOfBeansInFieldPartner(tup.getIndex()) != 0) {
+				for (int t = tup.getIndex()-1; t >= minField; t--) {
+					if (field_clone[t] == tup.getIndex() - t) {							
+						possibleMoves_best.add(index, t);
+						field_clone[t] = 0;
 					}
 				}
 			}
@@ -158,7 +180,7 @@ public class Board {
 			}
 		}
 		possibleMoves.addAll(0, possibleMoves_best);
-		System.out.println("poss moves: " + possibleMoves.toString());
+		//System.out.println("poss moves: " + possibleMoves.toString());
 		return possibleMoves;
 	}
 	
