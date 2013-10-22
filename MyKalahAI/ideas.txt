@@ -4,6 +4,7 @@
 - wenn man lücken hat und diese füllen kann, dann besser
 - wenn man auf dem letzten feld jeweils eine 1 oder mehr hat, dann kriegt man garantiert + 1, bei 14 (?) sogar 2 und so weiter, da man die nicht klauen kann
 - beim stehlen auch einmal rumlaufen beachten!!
+- wenn man gewonnen hat braucht man die anderen evaluierungen nicht mehr zusätzlich!
 
 ##### presorting der züge #######
 - die felder vor dem haus gleich nach vorne, wenn 6. feld == 1 dann kann man gleich rein -> nix zu verlieren

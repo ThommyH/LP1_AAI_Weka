@@ -108,7 +108,7 @@ public class ClientKalaha
 				{
 					// ADD CODE FOR AI
 					Board currentBoard = new Board(reply);
-					AlphaBetaAlgo minmaxalgo = new AlphaBetaAlgo(startdepth, EvaluationType.WILLWIN_HOUSECOMPARE);
+					AlphaBetaAlgo minmaxalgo = new AlphaBetaAlgo(startdepth, EvaluationType.WILLWIN_HOUSECOMPARE_SPACES);
 					minmaxalgo.startMinMaxInterativeDeepening(currentBoard);
 					input = new String(""+minmaxalgo.getMoveMappedOnServer());
 				}
