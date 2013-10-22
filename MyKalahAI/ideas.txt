@@ -3,9 +3,9 @@
 - wenn der gegner nichtmehr direkt ins haus ziehen kann + wenn man selbst die option im n��chsten zug h��tte
 - wenn man l��cken hat und diese f��llen kann, dann besser
 - wenn man auf dem letzten feld jeweils eine 1 oder mehr hat, dann kriegt man garantiert + 1, bei 14 (?) sogar 2 und so weiter, da man die nicht klauen kann
-- beim stehlen auch einmal rumlaufen beachten!!
 - wenn man gewonnen hat braucht man die anderen evaluierungen nicht mehr zus��tzlich!
 
 ##### presorting der z��ge #######
 - die felder vor dem haus gleich nach vorne, wenn 6. feld == 1 dann kann man gleich rein -> nix zu verlieren
 - wenn man einmal rum kann und dann ins haus (modulo)
+- beim stehlen auch einmal rumlaufen beachten!!
