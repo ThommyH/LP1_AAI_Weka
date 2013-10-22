@@ -157,10 +157,6 @@ public class Board {
 			}
 		}
 		possibleMoves.addAll(0, possibleMoves_best);
-<<<<<<< HEAD
-		//System.out.println("poss moves: " + possibleMoves.toString());
-=======
->>>>>>> 21e77416d19dd966b5fdc55786c0420a95a75317
 		return possibleMoves;
 	}
 	
