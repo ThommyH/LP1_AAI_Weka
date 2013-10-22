@@ -243,6 +243,12 @@ public class Board {
 		else return true;
 	}
 	
+	public int guaranteedBeansInFrontOfHouseCurrentPlayer(){
+		int ambooInfrontOfHouse = (player == 1)? 5 : 12;
+		// fields directly in front of the house cant be stolen, so they are guaranteed
+		return (field[ambooInfrontOfHouse]+11)/12;
+	}
+	
 	/**
 	 * If any one has more than the half of the beans,
 	 * the winner of the game is decided
@@ -257,12 +263,13 @@ public class Board {
 	}
 
 	/**
-	 * 
 	 * @return true if current player will win
 	 */
 	private Boolean willIWin() {
 		int pointsToWin = AMOUNTOFBEANSAMBOO*6;
-		if (getPoints(getPlayer()) > pointsToWin) {
+		// need more than 36 beans in house. beans directly in front of the house are
+		// guaranteed, can therefore be added as well
+		if ((getPoints(getPlayer()) + guaranteedBeansInFrontOfHouseCurrentPlayer()) > pointsToWin) {
 			return true;
 		}
 		else 
@@ -270,7 +277,6 @@ public class Board {
 	}
 	
 	/**
-	 * 
 	 * @return true if current player will lose
 	 */
 	private Boolean willOtherWin() {
@@ -322,10 +328,8 @@ public class Board {
 	 * @return difference between players beans in houses and those of the opponent 
 	 */
 	public int evalBeansHouses(){
-		int ambooInfrontOfHouse = (player == 1)? 5 : 12;
 		// fields directly in front of the house cant be stolen, so they are guaranteed
-		int guaranteedBeans = (field[ambooInfrontOfHouse]+11)/12;
-		return getPoints(getPlayer()) - getPoints(getOtherPlayer()) + guaranteedBeans;
+		return getPoints(getPlayer()) - getPoints(getOtherPlayer()) + guaranteedBeansInFrontOfHouseCurrentPlayer();
 	}
 	
 	public int evalBeansInAmbos(){
