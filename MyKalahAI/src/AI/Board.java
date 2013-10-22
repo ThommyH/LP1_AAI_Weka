@@ -150,7 +150,6 @@ public class Board {
 		}
 		for (int i = minField; i <= maxField; i++){
 			if (field_clone[i] != 0) {
-				// TODO: test
 				if (field_clone[i]%13 == maxField+1-i) 
 					possibleMoves.add(0, i);
 				else
@@ -158,7 +157,6 @@ public class Board {
 			}
 		}
 		possibleMoves.addAll(0, possibleMoves_best);
-		System.out.println("poss moves: " + possibleMoves.toString());
 		return possibleMoves;
 	}
 	
@@ -287,6 +285,8 @@ public class Board {
 			return false;
 	}
 	
+	
+	
 	/**
 	 * @return true if current player will lose
 	 */
@@ -300,12 +300,10 @@ public class Board {
 	}
 	
 	/**
-	 * 
-	 * @param method 1 for 
-	 * @return
+	 * @return the evaluated value of the current board viewed by the current player
 	 */
 	public int evaluate(EvaluationType method) {
-		// if game is endet, we can easy return the ending without further calcs
+		// if game is ended, we can easy return the ending without further calcs
 		int willWin = evalWillWin();
 		if (willWin != 0){
 			return willWin;
@@ -343,6 +341,9 @@ public class Board {
 		return getPoints(getPlayer()) - getPoints(getOtherPlayer()) + guaranteedBeansInFrontOfHouseCurrentPlayer();
 	}
 	
+	/**
+	 * @return difference between the amount of beans of the current player and the opponent
+	 */
 	public int evalBeansInAmbos(){
 		int start = (player == 1)? 0 : 7;
 		byte myBeans = 0;
