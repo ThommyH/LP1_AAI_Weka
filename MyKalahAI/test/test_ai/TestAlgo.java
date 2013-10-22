@@ -10,26 +10,11 @@ import org.junit.Test;
 
 import AI.AlphaBetaAlgo;
 import AI.Board;
-import AI.MinMaxAlgo;
+import AI.EvaluationType;
 import AI.NoTimeLeftError;
 
 public class TestAlgo {
 
-	@Test
-	public void testMinMax() {
-		Board board = new Board();
-		byte[] boardArray = {0,6,5,4,0,1,0,
-							 4,6,4,7,2,1,0};
-		board.setField(boardArray);
-		board.setPlayer(1);
-		
-		int startdeep = 3;
-		 MinMaxAlgo minmax = new  MinMaxAlgo();
-		 minmax.startMinMax(startdeep, board);
-		 minmax.printMove();
-		 assertTrue(true);
-	}
-	
 	@Test
 	public void testAlphaBeta() throws NoTimeLeftError {
 		Board board = new Board();
@@ -39,7 +24,7 @@ public class TestAlgo {
 		board.setPlayer(1);
 		
 		int startdeep = 3;
-		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(startdeep);
+		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(startdeep, EvaluationType.WILLWIN_HOUSECOMPARE);
 		alphaBeta.startMinMax(board);
 		assertTrue(true);
 	}
@@ -52,7 +37,7 @@ public class TestAlgo {
 							 0,8,7,7,0,7,1};
 		board.setField(boardArray);
 		board.setPlayer(2);
-		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6);
+		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6, EvaluationType.WILLWIN_HOUSECOMPARE);
 		alphaBeta.startMinMax(board);
 		assertTrue(alphaBeta.storedMove != -1);
 	}
@@ -65,7 +50,7 @@ public class TestAlgo {
 							 0,0,0,0,3,1,13};
 		board.setField(boardArray);
 		board.setPlayer(2);
-		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6);
+		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6, EvaluationType.WILLWIN_HOUSECOMPARE);
 		alphaBeta.startMinMax(board);
 		//System.out.println(alphaBeta.storedMove);
 		assertTrue(alphaBeta.storedMove != -1);
@@ -79,7 +64,7 @@ public class TestAlgo {
 							 0,1,0,0,0,0,30};
 		board.setField(boardArray);
 		board.setPlayer(2);
-		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6);
+		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6, EvaluationType.WILLWIN_HOUSECOMPARE);
 		alphaBeta.startMinMax(board);
 		//System.out.println(alphaBeta.storedMove);
 		assertTrue(alphaBeta.storedMove != -1);
@@ -105,7 +90,7 @@ public class TestAlgo {
 				  			1,0,1,1,0,1,5};
 		board.setField(boardArray);
 		board.setPlayer(2);
-		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6);
+		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6, EvaluationType.WILLWIN_HOUSECOMPARE);
 		alphaBeta.startMinMax(board);
 		assertTrue(alphaBeta.storedMove != -1);
 	}
@@ -127,7 +112,7 @@ public class TestAlgo {
 				  			3,14,0,0,1,13,9};
 		board.setField(boardArray);
 		board.setPlayer(2);
-		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6);
+		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6, EvaluationType.WILLWIN_HOUSECOMPARE);
 		alphaBeta.startMinMax(board);
 		assertTrue(alphaBeta.storedMove != -1);
 	}

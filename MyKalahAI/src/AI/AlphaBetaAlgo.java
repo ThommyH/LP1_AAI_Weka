@@ -5,25 +5,26 @@ import java.util.ArrayList;
 /**
  * This class implements the Min-Max-Search-Algorithmus 
  * with Alpha-Beta-Prunning
- * @author julia
  *
  */
 public class AlphaBetaAlgo {
 
-	// how deep the search tree should be
-	public int startdeep;
-	public int storedMove;
-	public long endTime;
+	
+	public int startdeep; // how deep the search tree should be in the beginning
+	public int storedMove; // best move found by algorithm
+	public long endTime; // deadline for computation
 	public static long MAXIMAL_COMPUTATION_TIME = 3000000000l; 
+	public EvaluationType evalMethod;
 	
 	/**
 	 * Constructor
 	 * @param startdeep
 	 */
-	public AlphaBetaAlgo(int startdeep) {
+	public AlphaBetaAlgo(int startdeep, EvaluationType evalMethod) {
 		this.startdeep = startdeep;
 		this.storedMove = -1;
 		this.endTime = System.nanoTime() + MAXIMAL_COMPUTATION_TIME;
+		this.evalMethod = evalMethod;
 	}
 	
 	/**
@@ -51,6 +52,10 @@ public class AlphaBetaAlgo {
 				break;
 			}
 			startdeep += 1;
+			// dont need to calculate anymore because every move will end in a 100% win or lose
+			if (eval >= 10000000 || eval <= -10000000){
+				break;
+			}
 		}
 		return eval;
 	}
@@ -82,7 +87,7 @@ public class AlphaBetaAlgo {
 			if (storedMove == -1 && board.willAnyWin() && moves.size()!=0) {
 				storedMove = moves.get(0);
 			}
-			int eval = board.evaluate();
+			int eval = board.evaluate(evalMethod);
 			return eval;
 		}
 		int maxValue = alpha; 
@@ -105,6 +110,8 @@ public class AlphaBetaAlgo {
 					if (deep == startdeep){ 
 						storedMove = move;
 					}
+				} else {
+					break; // cutoff
 				}
 			}
 			

@@ -87,9 +87,6 @@ public class Board {
 		int mirroredField = FIELD_PARTNER[fieldindex];
 		return this.field[mirroredField]; 
 	}
-
-	
-
 	//////////
 	// methods
 	//////////
@@ -132,9 +129,7 @@ public class Board {
 		int maxField = minField+5;
 		byte[] field_clone = getField().clone();
 		for (int p = maxField; p >= minField; p--) {
-			//System.out.println("p ->" + p);
 			if (field_clone[p] == 0 && getNumbersOfBeansInFieldPartner(p) != 0) {
-				//System.out.println("field partner for:" + p + "->" + getNumbersOfBeansInFieldPartner(p));
 				for (int t = p-1; t >= minField; t--) {
 					if (field_clone[t] == p - t) {
 						possibleMoves_best.add(0, t);
@@ -145,16 +140,33 @@ public class Board {
 		}
 		for (int i = minField; i <= maxField; i++){
 			if (field_clone[i] != 0) {
-				if (field_clone[i] == maxField+1-i) 
+				// TODO: test
+				if (field_clone[i]%13 == maxField+1-i) 
 					possibleMoves.add(0, i);
 				else
 					possibleMoves.add(i);
 			}
 		}
 		possibleMoves.addAll(0, possibleMoves_best);
-		//System.out.println(Arrays.toString(field));
-		//System.out.println(possibleMoves);
-		//System.out.println();
+		return possibleMoves;
+	}
+	
+	/** 
+	 * returns the fields which enables the player to steal beans fromt he opponent
+	 * @param start earliest field to watch e.g. 0
+	 * @param end latest field to watch e.g. 5
+	 */
+	public ArrayList<Integer> findMovesWhichGoIntoEmptyAmboAndSteal(int start, int end){
+		ArrayList<Integer> possibleMoves = new ArrayList<Integer>(); 
+		for (int p = end; p >= start; p--) {
+			if (field[p] == 0 && getNumbersOfBeansInFieldPartner(p) != 0) {
+				for (int t = p-1; t >= start; t--) {
+					if (field[t] == p - t) {
+						possibleMoves.add(t);
+					}
+				}
+			}
+		}
 		return possibleMoves;
 	}
 	
@@ -270,15 +282,96 @@ public class Board {
 			return false;
 	}
 	
-	public int evaluate() {
+	/**
+	 * 
+	 * @param method 1 for 
+	 * @return
+	 */
+	public int evaluate(EvaluationType method) {
+		// strongest so far
+		switch (method) {
+			case WILLWIN_HOUSECOMPARE:
+				return evalWillWin() + evalBeansHouses();
+			case WILLWIN_HOUSECOMPARE_BEANSAMBOS:
+				return evalWillWin() + evalBeansHouses()*10 + evalBeansInAmbos();
+			case WILLWIN_HOUSECOMPARE_SPACES:
+				return evalWillWin() + evalBeansHouses() + evalSpacesWhichCanBeFilled();
+			default:
+				return 0;
+		}
+	}
+
+	/**
+	 * @return 10mio if win is secure or -10mio if lose is secure, otherwise 0
+	 */
+	public int evalWillWin(){
 		if (willIWin()){
-			//System.out.println("win");
 			return 10000000;
 		} else if (willOtherWin()){
-			//System.out.println("lose");
-			return -1000000;
+			return -10000000;
+		} else {
+			return 0;
 		}
-		//System.out.println("not sure: " + (getPoints(getPlayer()) - getPoints(getOtherPlayer())));
+	}
+	
+	/**
+	 * @return difference between players beans in houses and those of the opponent 
+	 */
+	public int evalBeansHouses(){
 		return getPoints(getPlayer()) - getPoints(getOtherPlayer());
 	}
+	
+	public int evalBeansInAmbos(){
+		int start = (player == 1)? 0 : 7;
+		byte myBeans = 0;
+		byte opponentBeans = 0;
+		for (int i = start; i < start+6; i++){
+			myBeans += field[i];
+		}
+		for (int i = (start+7)%14; i < (start+6+7)%14; i++){
+			opponentBeans += field[i];
+		}
+		return (int) myBeans - opponentBeans;
+	}
+	
+	/**
+	 * @return the greates amount of beans which can be currently be stolen
+	 */
+	public int evalSpacesWhichCanBeFilled(){
+		// critical spaces are those who have at least 1 bean in fieldpartner
+		// current player profit much greater from stealing possibilities. but dont forget the stealing of the opponent!
+		if (player==1){
+			return greatestWinWithStealingMoves(0,5) + 1;
+		} else {
+			return greatestWinWithStealingMoves(7,12) + 1;
+		}
+	}
+	
+	/** 
+	 * returns the number of beans which the current player can steal
+	 * @param start earliest field to watch e.g. 0
+	 * @param end latest field to watch e.g. 5
+	 */
+	private int greatestWinWithStealingMoves(int start, int end){
+		int greatestWin = 0;
+		int currentWin = 0;
+		int currentBeansInFieldPartner = 0;
+		// search for all empty amboo
+		for (int p = end; p >= start; p--) {
+			// if empty amboo found and opponent has a something greater as the current 
+			// winning then dig deeper
+			currentBeansInFieldPartner = getNumbersOfBeansInFieldPartner(p);
+			if (field[p] == 0 && currentBeansInFieldPartner > greatestWin) {
+				for (int t = p-1; t >= start; t--) {
+					if (field[t] == p - t) {
+						// found a field which can be stolen by a move
+						greatestWin = currentBeansInFieldPartner;
+					}
+				}
+			}
+		}
+		return greatestWin;
+	}
+	
+	
 }

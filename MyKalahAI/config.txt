@@ -7,5 +7,5 @@ Port=10101
 # RandomClient
 # HumanClient
 #or empty for not starting a client.
-Client1=RandomClient
-Client2=HumanClient
+#Client1=RandomClient
+#Client1=HumanClient

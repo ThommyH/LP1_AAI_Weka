@@ -5,7 +5,7 @@ import java.net.*;
 
 import AI.AlphaBetaAlgo;
 import AI.Board;
-import AI.MinMaxAlgo;
+import AI.EvaluationType;
 
 public class ClientKalaha
 {
@@ -13,12 +13,23 @@ public class ClientKalaha
 	private String host;
 	private int port;
 	private boolean ai;
+	private static int startdepth;
 
 		//sorts out commandline arguments and starts the application
 	public static void main(String args[]) throws Exception
 	{
+		int startdepth = 11; 
 		boolean aiFlag = false;
-		if(args.length == 3)
+		if(args.length == 4)
+		{
+			if(args[2].toUpperCase().equals("AI")){
+				aiFlag = true;
+			}
+			if (Integer.parseInt(args[3]) >= 1){
+				startdepth = Integer.parseInt(args[3]);
+			}
+		}		
+		else if(args.length == 3)
 		{
 			if(args[2].toUpperCase().equals("AI") )
 				aiFlag = true;
@@ -29,17 +40,18 @@ public class ClientKalaha
 			System.exit(0);
 		}
 
-		ClientKalaha app = new ClientKalaha(args[0], Integer.parseInt(args[1]), aiFlag );
+		ClientKalaha app = new ClientKalaha(args[0], Integer.parseInt(args[1]), aiFlag, startdepth);
 
 	}
 		//handles all the input/output.
-	public ClientKalaha(String _host, int _port, boolean _ai) throws Exception
+	public ClientKalaha(String _host, int _port, boolean _ai, int startdepth) throws Exception
 	{
 		int next_player = 0;
 
 		port = _port;
 		host = _host;
 		ai = _ai;
+		startdepth = startdepth;
 
 		String input;
 		String reply;
@@ -96,10 +108,9 @@ public class ClientKalaha
 				{
 					// ADD CODE FOR AI
 					Board currentBoard = new Board(reply);
-					AlphaBetaAlgo minmaxalgo = new AlphaBetaAlgo(8);
+					AlphaBetaAlgo minmaxalgo = new AlphaBetaAlgo(startdepth, EvaluationType.WILLWIN_HOUSECOMPARE_SPACES);
 					minmaxalgo.startMinMaxInterativeDeepening(currentBoard);
 					input = new String(""+minmaxalgo.getMoveMappedOnServer());
-					System.err.println(input);
 				}
 
 				if(input.toUpperCase().startsWith("N") )
@@ -140,7 +151,13 @@ public class ClientKalaha
 				{
 					System.out.println("\nWaiting for player 1, press enter to update.");
 				}
-				terminalInput.readLine();
+				
+				if (ai == false){
+					terminalInput.readLine();
+				} else {
+					// check if opponent made a move
+					Thread.currentThread().sleep(50);
+				}
 			}
 		}
 	}
