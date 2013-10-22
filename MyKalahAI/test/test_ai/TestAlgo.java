@@ -130,8 +130,8 @@ public class TestAlgo {
 		System.out.println("testPossibleMovesPresorted started");
 		// just for trying out, not a real test
 		Board board = new Board();
-		byte[] boardArray = {1,1,8,5,5,0,19,
-				  			4,1,0,0,1,12,9};
+		byte[] boardArray = {1,0,7,0,5,0,19,
+				  			2,2,3,0,1,12,9};
 		board.setField(boardArray);
 		board.setPlayer(2);
 		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6, EvaluationType.WILLWIN_HOUSECOMPARE);
