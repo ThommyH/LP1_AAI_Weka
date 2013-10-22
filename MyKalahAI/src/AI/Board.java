@@ -129,11 +129,21 @@ public class Board {
 		int maxField = minField+5;
 		byte[] field_clone = getField().clone();
 		for (int p = maxField; p >= minField; p--) {
-			if (field_clone[p] == 0 && getNumbersOfBeansInFieldPartner(p) != 0) {
-				for (int t = p-1; t >= minField; t--) {
-					if (field_clone[t] == p - t) {
-						possibleMoves_best.add(0, t);
-						field_clone[t] = 0;
+			if (field_clone[p] == 0) {
+				int index = 0;
+				for (int k = maxField; k>p; k--) {
+					if (field_clone[k] == 14 - (k - p)) {
+						possibleMoves_best.add(0, k);
+						field_clone[k] = 0;
+						index++;
+					}
+				}
+				if (getNumbersOfBeansInFieldPartner(p) != 0) {
+					for (int t = p-1; t >= minField; t--) {
+						if (field_clone[t] == p - t) {
+							possibleMoves_best.add(index, t);
+							field_clone[t] = 0;
+						}
 					}
 				}
 			}
@@ -148,6 +158,7 @@ public class Board {
 			}
 		}
 		possibleMoves.addAll(0, possibleMoves_best);
+		System.out.println("poss moves: " + possibleMoves.toString());
 		return possibleMoves;
 	}
 	
