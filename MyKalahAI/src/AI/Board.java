@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class Board {
 	
 	private byte[] field;
-	static int AMOUNTOFBEANSAMBOO = 6;
+	static final int AMOUNTOFBEANSAMBOO = 6;
 	private int player;
 	public static final byte[] FIELD_PARTNER = {12,11,10,9,8,7,-1,5,4,3,2,1,0,-1};
 	
@@ -288,14 +288,18 @@ public class Board {
 	 * @return
 	 */
 	public int evaluate(EvaluationType method) {
-		// strongest so far
+		// if game is endet, we can easy return the ending without further calcs
+		int willWin = evalWillWin();
+		if (willWin != 0){
+			return willWin;
+		}
 		switch (method) {
 			case WILLWIN_HOUSECOMPARE:
-				return evalWillWin() + evalBeansHouses();
+				return evalBeansHouses();
 			case WILLWIN_HOUSECOMPARE_BEANSAMBOS:
-				return evalWillWin() + evalBeansHouses()*10 + evalBeansInAmbos();
+				return evalBeansHouses()*10 + evalBeansInAmbos();
 			case WILLWIN_HOUSECOMPARE_SPACES:
-				return evalWillWin() + evalBeansHouses() + evalSpacesWhichCanBeFilled();
+				return evalBeansHouses() + evalSpacesWhichCanBeFilled();
 			default:
 				return 0;
 		}
@@ -318,7 +322,10 @@ public class Board {
 	 * @return difference between players beans in houses and those of the opponent 
 	 */
 	public int evalBeansHouses(){
-		return getPoints(getPlayer()) - getPoints(getOtherPlayer());
+		int ambooInfrontOfHouse = (player == 1)? 5 : 12;
+		// fields directly in front of the house cant be stolen, so they are guaranteed
+		int guaranteedBeans = (field[ambooInfrontOfHouse]+11)/12;
+		return getPoints(getPlayer()) - getPoints(getOtherPlayer()) + guaranteedBeans;
 	}
 	
 	public int evalBeansInAmbos(){

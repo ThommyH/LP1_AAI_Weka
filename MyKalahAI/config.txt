@@ -8,4 +8,4 @@ Port=10101
 # HumanClient
 #or empty for not starting a client.
 #Client1=RandomClient
-#Client1=HumanClient
+#Client2=HumanClient
