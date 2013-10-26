@@ -4,35 +4,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Board {
-	
+
 	private byte[] field;
 	static final int AMOUNTOFBEANSAMBOO = 6;
 	private int player;
 	public static final byte[] FIELD_PARTNER = {12,11,10,9,8,7,-1,5,4,3,2,1,0,-1};
-	
+
 	//
 	//north			12	11	10	9	8	7	
 	//houses  	13							6
 	//south			0	1	2	3	4	5
 	//
 	//south = player 1, north = player 2
-	
-	
+
+
 	public Board(){
 		field = new byte[14];
 		player = 1;
 	}
-	
+
 	public Board(String codedBoard){
-//		String h2;p1a1;p1a2;p1a3;p1a4;p1a5;p1a6;h1;p2a1;p2a2;p2a3;p2a4;p2a5;p2a6;P
-//		  where
-//		       p = player (1,2)
-//		       a = ambo (1-6)
-//		       h = house (1,2)
-//		       P = The player (1 or 2) to make the next move.
-//		  Example:
-//		       p1a2 means the second ambo for player 1
-//		       h2 means the house of player 2.
+		//		String h2;p1a1;p1a2;p1a3;p1a4;p1a5;p1a6;h1;p2a1;p2a2;p2a3;p2a4;p2a5;p2a6;P
+		//		  where
+		//		       p = player (1,2)
+		//		       a = ambo (1-6)
+		//		       h = house (1,2)
+		//		       P = The player (1 or 2) to make the next move.
+		//		  Example:
+		//		       p1a2 means the second ambo for player 1
+		//		       h2 means the house of player 2.
 		this.field = new byte[14];
 		String[] boardSplitted = codedBoard.split(";");
 		for (int i = 0; i<14; i++){
@@ -40,17 +40,17 @@ public class Board {
 		}
 		this.player = Integer.parseInt(boardSplitted[14]); 
 	}
-	
+
 	public Board(Board another){
 		// copy method
 		this.field = another.getField().clone();
 		this.player = another.getPlayer();
 	}
-	
+
 	////////////////////
 	// getter and setter
 	////////////////////
-	
+
 	public byte[] getField() {
 		return field;
 	}
@@ -70,14 +70,14 @@ public class Board {
 	public void setPlayer(int i) {
 		this.player = i;
 	}
-	
+
 	private int getPoints(int forPlayer) {
 		if (forPlayer == 1) 
 			return this.field[6];
 		else
 			return this.field[13];
 	}
-	
+
 	/**
 	 * 
 	 * @param fieldindex
@@ -117,7 +117,7 @@ public class Board {
 		}
 		return possibleMoves;
 	}
-	
+
 	/**
 	 * 
 	 * @return the possible presorted moves of the current player 
@@ -128,9 +128,11 @@ public class Board {
 		int minField = (player == 1)? 0 : 7;
 		int maxField = minField+5;
 		byte[] field_clone = getField().clone();
+		// check if moves can steal pebbles
 		for (int p = maxField; p >= minField; p--) {
 			if (field_clone[p] == 0) {
 				int index = 0;
+				// moves which makes a homerun
 				for (int k = maxField; k>p; k--) {
 					if (field_clone[k] == 14 - (k - p)) {
 						possibleMoves_best.add(0, k);
@@ -138,6 +140,7 @@ public class Board {
 						index++;
 					}
 				}
+				// moves without a homerun
 				if (getNumbersOfBeansInFieldPartner(p) != 0) {
 					for (int t = p-1; t >= minField; t--) {
 						if (field_clone[t] == p - t) {
@@ -150,16 +153,18 @@ public class Board {
 		}
 		for (int i = minField; i <= maxField; i++){
 			if (field_clone[i] != 0) {
-				if (field_clone[i]%13 == maxField+1-i) 
+				// moves after that player gets an extra move
+				if (field_clone[i]%13 == maxField+1-i) {
 					possibleMoves.add(0, i);
-				else
+				} else {
 					possibleMoves.add(i);
+				}
 			}
 		}
 		possibleMoves.addAll(0, possibleMoves_best);
 		return possibleMoves;
 	}
-	
+
 	/** 
 	 * returns the fields which enables the player to steal beans fromt he opponent
 	 * @param start earliest field to watch e.g. 0
@@ -178,7 +183,7 @@ public class Board {
 		}
 		return possibleMoves;
 	}
-	
+
 	/**
 	 * actual movement of beans
 	 * places all beans to pots when one player have no move left (after the move)
@@ -214,7 +219,7 @@ public class Board {
 		// search if the amboos of at least one player are empty -> should be faster than loop
 		if ((field[0]==0 && field[1]==0 && field[2]==0 && field[3]==0 && field[4]==0 && field[5]==0) 
 				|| 
-			(field[7]==0 && field[8]==0 && field[9]==0 && field[10]==0 && field[11]==0 && field[12]==0)){
+				(field[7]==0 && field[8]==0 && field[9]==0 && field[10]==0 && field[11]==0 && field[12]==0)){
 			// if one player has no possible move anymore -> put all remaining tokens to the house
 			putAllBeansOfAmboosToHouses();
 		}
@@ -227,7 +232,7 @@ public class Board {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * places all remaining beans to the houses
 	 */
@@ -241,7 +246,7 @@ public class Board {
 			field[i] = 0;
 		}
 	}
-	
+
 	/**
 	 * @return true if the move i possible from the current player
 	 */
@@ -251,13 +256,13 @@ public class Board {
 		else if (field[move] == 0) return false;
 		else return true;
 	}
-	
+
 	public int guaranteedBeansInFrontOfHouseCurrentPlayer(){
 		int ambooInfrontOfHouse = (player == 1)? 5 : 12;
 		// fields directly in front of the house cant be stolen, so they are guaranteed
 		return (field[ambooInfrontOfHouse]+11)/12;
 	}
-	
+
 	/**
 	 * If any one has more than the half of the beans,
 	 * the winner of the game is decided
@@ -284,9 +289,9 @@ public class Board {
 		else 
 			return false;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * @return true if current player will lose
 	 */
@@ -298,7 +303,7 @@ public class Board {
 		else 
 			return false;
 	}
-	
+
 	/**
 	 * @return the evaluated value of the current board viewed by the current player
 	 */
@@ -309,14 +314,14 @@ public class Board {
 			return willWin;
 		}
 		switch (method) {
-			case WILLWIN_HOUSECOMPARE:
-				return evalBeansHouses();
-			case WILLWIN_HOUSECOMPARE_BEANSAMBOS:
-				return evalBeansHouses()*10 + evalBeansInAmbos();
-			case WILLWIN_HOUSECOMPARE_SPACES:
-				return evalBeansHouses() + evalSpacesWhichCanBeFilled();
-			default:
-				return 0;
+		case WILLWIN_HOUSECOMPARE:
+			return evalBeansHouses();
+		case WILLWIN_HOUSECOMPARE_BEANSAMBOS:
+			return evalBeansHouses()*10 + evalBeansInAmbos();
+		case WILLWIN_HOUSECOMPARE_SPACES:
+			return evalBeansHouses() + evalSpacesWhichCanBeFilled();
+		default:
+			return 0;
 		}
 	}
 
@@ -332,7 +337,7 @@ public class Board {
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * @return difference between players beans in houses and those of the opponent 
 	 */
@@ -340,7 +345,7 @@ public class Board {
 		// fields directly in front of the house cant be stolen, so they are guaranteed
 		return getPoints(getPlayer()) - getPoints(getOtherPlayer()) + guaranteedBeansInFrontOfHouseCurrentPlayer();
 	}
-	
+
 	/**
 	 * @return difference between the amount of beans of the current player and the opponent
 	 */
@@ -356,7 +361,7 @@ public class Board {
 		}
 		return (int) myBeans - opponentBeans;
 	}
-	
+
 	/**
 	 * @return the greates amount of beans which can be currently be stolen
 	 */
@@ -369,7 +374,7 @@ public class Board {
 			return greatestWinWithStealingMoves(7,12) + 1;
 		}
 	}
-	
+
 	/** 
 	 * returns the number of beans which the current player can steal
 	 * @param start earliest field to watch e.g. 0
@@ -395,6 +400,6 @@ public class Board {
 		}
 		return greatestWin;
 	}
-	
-	
+
+
 }

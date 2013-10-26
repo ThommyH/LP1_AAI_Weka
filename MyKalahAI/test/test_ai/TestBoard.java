@@ -259,11 +259,11 @@ public class TestBoard {
 		while (board.winner() == -1){
 			if (board.getPlayer() == 2){
 				algoWW_HC = new  AlphaBetaAlgo(11, EvaluationType.WILLWIN_HOUSECOMPARE);
-				algoWW_HC.startMinMaxInterativeDeepening(board);
+				algoWW_HC.startAlphaBetaInterativeDeepening(board);
 				board.performMove(algoWW_HC.storedMove);
 			} else {
 				algoWW_HC_AM = new  AlphaBetaAlgo(11, EvaluationType.WILLWIN_HOUSECOMPARE_SPACES);
-				algoWW_HC_AM.startMinMaxInterativeDeepening(board);
+				algoWW_HC_AM.startAlphaBetaInterativeDeepening(board);
 				board.performMove(algoWW_HC_AM.storedMove);
 			}
 		}

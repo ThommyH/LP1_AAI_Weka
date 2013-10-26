@@ -26,7 +26,7 @@ public class TestAlgo {
 		
 		int startdeep = 3;
 		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(startdeep, EvaluationType.WILLWIN_HOUSECOMPARE);
-		alphaBeta.startMinMax(board);
+		alphaBeta.startAlphaBeta(board);
 		assertTrue(true);
 	}
 	
@@ -40,7 +40,7 @@ public class TestAlgo {
 		board.setField(boardArray);
 		board.setPlayer(2);
 		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6, EvaluationType.WILLWIN_HOUSECOMPARE);
-		alphaBeta.startMinMax(board);
+		alphaBeta.startAlphaBeta(board);
 		assertTrue(alphaBeta.storedMove != -1);
 	}
 	
@@ -54,7 +54,7 @@ public class TestAlgo {
 		board.setField(boardArray);
 		board.setPlayer(2);
 		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6, EvaluationType.WILLWIN_HOUSECOMPARE);
-		alphaBeta.startMinMax(board);
+		alphaBeta.startAlphaBeta(board);
 		//System.out.println(alphaBeta.storedMove);
 		assertTrue(alphaBeta.storedMove != -1);
 	}
@@ -69,7 +69,7 @@ public class TestAlgo {
 		board.setField(boardArray);
 		board.setPlayer(2);
 		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6, EvaluationType.WILLWIN_HOUSECOMPARE);
-		alphaBeta.startMinMax(board);
+		alphaBeta.startAlphaBeta(board);
 		//System.out.println(alphaBeta.storedMove);
 		assertTrue(alphaBeta.storedMove != -1);
 	}
@@ -97,7 +97,7 @@ public class TestAlgo {
 		board.setField(boardArray);
 		board.setPlayer(2);
 		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6, EvaluationType.WILLWIN_HOUSECOMPARE);
-		alphaBeta.startMinMax(board);
+		alphaBeta.startAlphaBeta(board);
 		assertTrue(alphaBeta.storedMove != -1);
 	}
 
@@ -121,7 +121,7 @@ public class TestAlgo {
 		board.setField(boardArray);
 		board.setPlayer(2);
 		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6, EvaluationType.WILLWIN_HOUSECOMPARE);
-		alphaBeta.startMinMax(board);
+		alphaBeta.startAlphaBeta(board);
 		assertTrue(alphaBeta.storedMove != -1);
 	}
 	
@@ -135,7 +135,7 @@ public class TestAlgo {
 		board.setField(boardArray);
 		board.setPlayer(2);
 		AlphaBetaAlgo alphaBeta = new  AlphaBetaAlgo(6, EvaluationType.WILLWIN_HOUSECOMPARE);
-		alphaBeta.startMinMax(board);
+		alphaBeta.startAlphaBeta(board);
 		assertTrue(alphaBeta.storedMove != -1);
 	}
 }

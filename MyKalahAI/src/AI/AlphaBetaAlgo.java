@@ -32,7 +32,7 @@ public class AlphaBetaAlgo {
 	 * maxmum is 3 seconds
 	 * @return
 	 */
-	public int startMinMaxInterativeDeepening(Board board){
+	public int startAlphaBetaInterativeDeepening(Board board){
 		endTime = System.nanoTime() + MAXIMAL_COMPUTATION_TIME;
 		int bestMove;
 		int eval = 0;
@@ -41,12 +41,9 @@ public class AlphaBetaAlgo {
 			bestMove = storedMove;
 			oldEval = eval;
 			try {
-				System.out.println("START ALPHA BETA WITH DEPTH " + startdeep + ". time left (ms): " + timeLeft()/1000000l);
-				System.out.println("best move so far: " + storedMove);
-				eval = startMinMax(board);
+				eval = startAlphaBeta(board);
 			// no time was left, reset best move from the previous interation because new algorithm did not finished
 			} catch (NoTimeLeftError e) {
-				System.out.println("break");
 				eval = oldEval;
 				storedMove = bestMove;
 				break;
@@ -64,13 +61,13 @@ public class AlphaBetaAlgo {
 		return endTime - System.nanoTime();
 	}
 	
-	public int startMinMax(Board board) throws NoTimeLeftError {
-		return this.minmax(startdeep, board, Integer.MIN_VALUE + 10, Integer.MAX_VALUE - 10);
+	public int startAlphaBeta(Board board) throws NoTimeLeftError {
+		return this.alphaBeta(startdeep, board, Integer.MIN_VALUE + 10, Integer.MAX_VALUE - 10);
 	}
 	
 	/**
-	 * Implementation of the algorithm
-	 * 
+	 * Implementation of the algorithm alpha beta in the NegaMax version
+	 * every player will maximize (not only the player 'max' but also player 'min')
 	 * @param deep		current deep of the tree
 	 * @param board		representation of the current gameposition
 	 * @param alpha		best value for max
@@ -78,18 +75,21 @@ public class AlphaBetaAlgo {
 	 * @return
 	 * @throws NoTimeLeftError 
 	 */
-	private int minmax(int deep, Board board, int alpha, int beta) throws NoTimeLeftError {
+	private int alphaBeta(int deep, Board board, int alpha, int beta) throws NoTimeLeftError {
+		// if time is over, interrupt
 		if (timeLeft() <= 0){
 			throw new NoTimeLeftError("3 seconds are over");
 		}
 		ArrayList<Integer> moves = board.possibleMovesPresorted();
+		// recursive anchor reached or no moves left or somebody will win
 		if (deep == 0 || moves.size() == 0 || board.willAnyWin()){
+			// if move doesnt matter anymore because it is already won, get the first possible move (when no other moves was saved before)
 			if (storedMove == -1 && board.willAnyWin() && moves.size()!=0) {
 				storedMove = moves.get(0);
 			}
-			int eval = board.evaluate(evalMethod);
-			return eval;
+			return board.evaluate(evalMethod);
 		}
+		// best found move so far has evaluation alpha
 		int maxValue = alpha; 
 		for (int move : moves){
 			Board board_new = new Board(board);
@@ -97,30 +97,33 @@ public class AlphaBetaAlgo {
 			int value = 0;
 			// if we can do another move we will try to move it right away
 			if (hasAnotherMove){
-				value = minmax(deep-1, board_new, maxValue, beta);
+				value = alphaBeta(deep-1, board_new, maxValue, beta);
 			} else {
-				value = -minmax(deep-1, board_new, -beta, -maxValue);
+				// nega max implementation, switch and negate alpha and beta.
+				value = -alphaBeta(deep-1, board_new, -beta, -maxValue);
 			}
-			if (deep == getStartdeep()){
-				System.err.println(move +" -->" + value);
-			}
+			// check if move is better than the previous best
 			if (value > maxValue) {
 				maxValue = value;
+				// check if it is acceptable good for the opponent
 				if (maxValue < beta){
 					if (deep == startdeep){ 
+						// found new best move
 						storedMove = move;
 					}
 				} else {
-					break; // cutoff
+					break; // cutoff because move was too good ;)
 				}
 			}
-			
 		}
 		return maxValue;
 	}
 	
+	/**
+	 * 
+	 * @return the server version of the calculated move
+	 */
 	public String getMoveMappedOnServer() {
-		//System.err.println("premapped: "+storedMove);
 		return (storedMove < 6)? new String(""+(storedMove + 1)) : new String(""+ (storedMove - 6)); 
 	}
 	

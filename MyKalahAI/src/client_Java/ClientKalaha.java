@@ -36,7 +36,7 @@ public class ClientKalaha
 		}
 		else if(args.length != 2)
 		{
-			System.out.println("Syntax: ClientKalaha [host] [port] [ai]");
+			System.out.println("Syntax: ClientKalaha [host] [port] [ai] [startdeep]");
 			System.exit(0);
 		}
 
@@ -44,14 +44,14 @@ public class ClientKalaha
 
 	}
 		//handles all the input/output.
-	public ClientKalaha(String _host, int _port, boolean _ai, int startdepth) throws Exception
+	public ClientKalaha(String _host, int _port, boolean _ai, int startDepth) throws Exception
 	{
 		int next_player = 0;
 
 		port = _port;
 		host = _host;
 		ai = _ai;
-		startdepth = startdepth;
+		startdepth = startDepth;
 
 		String input;
 		String reply;
@@ -109,7 +109,7 @@ public class ClientKalaha
 					// ADD CODE FOR AI
 					Board currentBoard = new Board(reply);
 					AlphaBetaAlgo minmaxalgo = new AlphaBetaAlgo(startdepth, EvaluationType.WILLWIN_HOUSECOMPARE_SPACES);
-					minmaxalgo.startMinMaxInterativeDeepening(currentBoard);
+					minmaxalgo.startAlphaBetaInterativeDeepening(currentBoard);
 					input = new String(""+minmaxalgo.getMoveMappedOnServer());
 				}
 
